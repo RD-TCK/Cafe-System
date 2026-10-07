@@ -1,0 +1,226 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model CafeSetting {
+  id                               Int      @id @default(1)
+  name                             String   @default("The Roasted Bean Café & Roastery")
+  tagline                          String   @default("Artisanal Coffee & Gourmet Dining")
+  description                      String   @default("Welcome to The Roasted Bean. Experience fresh brews, gourmet artisan pastries, and warm hospitality.")
+  address                          String   @default("104 Indiranagar 100ft Road, Bangalore, Karnataka 560038")
+  phone                            String   @default("+91 98765 43210")
+  email                            String   @default("hello@theroastedbean.com")
+  openingTime                      String   @default("08:00") // 24h format HH:mm
+  closingTime                      String   @default("23:00")
+  businessDayCutoffHour            Int      @default(4) // 4:00 AM next day belongs to previous business day
+  timezone                         String   @default("Asia/Kolkata")
+  defaultReservationDurationMinutes Int     @default(90)
+  bufferBeforeMinutes              Int      @default(15)
+  bufferAfterMinutes               Int      @default(15)
+  gracePeriodMinutes               Int      @default(15)
+  taxRatePercent                   Float    @default(5.0) // 5% GST
+  serviceChargePercent             Float    @default(5.0) // 5% Service charge
+  currencySymbol                   String   @default("₹")
+  updatedAt                        DateTime @updatedAt
+}
+
+model Closure {
+  id          String   @id @default(uuid())
+  title       String
+  startDate   DateTime
+  endDate     DateTime
+  isFullDay   Boolean  @default(true)
+  reason      String?
+  createdAt   DateTime @default(now())
+}
+
+model Table {
+  id           String        @id @default(uuid())
+  tableNumber  String        @unique // e.g. "T-01"
+  name         String        // e.g. "Garden Corner Booth"
+  capacityMin  Int           @default(1)
+  capacityMax  Int           @default(4)
+  section      String        @default("INDOOR") // INDOOR, OUTDOOR, TERRACE, BALCONY
+  isActive     Boolean       @default(true)
+  photoUrl     String?
+  description  String?
+  qrSecret     String        @default(uuid())
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  reservations Reservation[]
+  visits       Visit[]
+  orders       Order[]
+  bills        Bill[]
+}
+
+model Category {
+  id        String     @id @default(uuid())
+  name      String     @unique
+  sortOrder Int        @default(0)
+  icon      String?
+  isActive  Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  items     MenuItem[]
+}
+
+model MenuItem {
+  id              String      @id @default(uuid())
+  categoryId      String
+  category        Category    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  name            String
+  description     String
+  price           Float
+  isVegetarian    Boolean     @default(true)
+  isVegan         Boolean     @default(false)
+  isGlutenFree    Boolean     @default(false)
+  isSpicy         Boolean     @default(false)
+  isAvailable     Boolean     @default(true)
+  prepTimeMinutes Int         @default(15)
+  photoUrl        String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  orderItems      OrderItem[]
+}
+
+model Reservation {
+  id                    String    @id @default(uuid())
+  bookingReference      String    @unique // e.g. "RES-7482-99"
+  securityToken         String    // Secret lookup & edit token
+  guestName             String
+  guestPhone            String
+  guestEmail            String
+  guestCount            Int
+  occasion              String?   // BIRTHDAY, ANNIVERSARY, DATE, BUSINESS, CASUAL
+  specialRequest        String?
+  specialRequestApproved Boolean  @default(false)
+  
+  status                String    @default("REQUESTED") // REQUESTED, CONFIRMED, CHECKED_IN, COMPLETED, CANCELLED, REJECTED, NO_SHOW
+  rejectionReason       String?
+  
+  requestedTableId      String?   // null means "Any suitable table"
+  tableId               String?   // Assigned table
+  table                 Table?    @relation(fields: [tableId], references: [id], onDelete: SetNull)
+  combinedTableIds      String?   // JSON array string of table IDs if merged: '["id1", "id2"]'
+
+  startDateTime         DateTime
+  endDateTime           DateTime
+  durationMinutes       Int       @default(90)
+  bufferBeforeMinutes   Int       @default(15)
+  bufferAfterMinutes    Int       @default(15)
+
+  idempotencyKey        String?   @unique
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  visit                 Visit?
+}
+
+model Visit {
+  id               String      @id @default(uuid())
+  visitCode        String      @unique // e.g. "7392" (4-6 digit numeric / alphanumeric token for QR login)
+  tableId          String
+  table            Table       @relation(fields: [tableId], references: [id])
+  combinedTableIds String?     // JSON array string: '["t1", "t2"]'
+  reservationId    String?     @unique
+  reservation      Reservation? @relation(fields: [reservationId], references: [id], onDelete: SetNull)
+
+  guestName        String?
+  guestCount       Int         @default(2)
+  status           String      @default("ACTIVE") // ACTIVE, COMPLETED, CANCELLED
+  checkedInAt      DateTime    @default(now())
+  closedAt         DateTime?
+  
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  orders           Order[]
+  bill             Bill?
+}
+
+model Order {
+  id                 String      @id @default(uuid())
+  orderNumber        String      @unique // e.g. "ORD-1001"
+  visitId            String
+  visit              Visit       @relation(fields: [visitId], references: [id], onDelete: Cascade)
+  tableId            String
+  table              Table       @relation(fields: [tableId], references: [id])
+  round              Int         @default(1)
+  status             String      @default("PENDING") // PENDING, ACCEPTED, PREPARING, SERVED, CANCELLED
+  cancellationReason String?
+  notes              String?
+  
+  placedAt           DateTime    @default(now())
+  acceptedAt         DateTime?
+  preparingAt        DateTime?
+  servedAt           DateTime?
+  cancelledAt        DateTime?
+
+  idempotencyKey     String?     @unique
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+
+  items              OrderItem[]
+}
+
+model OrderItem {
+  id                 String    @id @default(uuid())
+  orderId            String
+  order              Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menuItemId         String
+  menuItem           MenuItem  @relation(fields: [menuItemId], references: [id])
+  
+  // Snapshots at time of order
+  itemNameSnapshot   String
+  unitPriceSnapshot  Float
+  quantity           Int       @default(1)
+  subtotalSnapshot   Float
+  customInstructions String?
+  status             String    @default("ACTIVE") // ACTIVE, CANCELLED
+  
+  createdAt          DateTime  @default(now())
+}
+
+model Bill {
+  id             String    @id @default(uuid())
+  billNumber     String    @unique // e.g. "BILL-2026-0001"
+  visitId        String    @unique
+  visit          Visit     @relation(fields: [visitId], references: [id], onDelete: Cascade)
+  tableId        String
+  table          Table     @relation(fields: [tableId], references: [id])
+  
+  subtotal       Float     @default(0)
+  taxRatePercent Float     @default(5.0)
+  taxAmount      Float     @default(0)
+  serviceChargePercent Float @default(5.0)
+  serviceCharge  Float     @default(0)
+  discountAmount Float     @default(0)
+  totalAmount    Float     @default(0)
+  
+  status         String    @default("UNPAID") // UNPAID, PARTIALLY_PAID, PAID, CANCELLED
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  payments       Payment[]
+}
+
+model Payment {
+  id             String    @id @default(uuid())
+  billId         String
+  bill           Bill      @relation(fields: [billId], references: [id], onDelete: Cascade)
+  amount         Float
+  paymentMethod  String    // CASH, UPI_QR, CREDIT_CARD, DEBIT_CARD, OTHER
+  status         String    @default("COMPLETED") // COMPLETED, REFUNDED
+  referenceNote  String?
+  paidAt         DateTime  @default(now())
+  idempotencyKey String?   @unique
+  createdAt      DateTime  @default(now())
+}
