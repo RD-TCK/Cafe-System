@@ -89,11 +89,6 @@ export default function OwnerDashboardPage() {
   const [selectedQrTable, setSelectedQrTable] = useState<any>(null);
   const [qrData, setQrData] = useState<any>(null);
 
-  // Table Combine modal
-  const [showCombineModal, setShowCombineModal] = useState(false);
-  const [primaryCombineTable, setPrimaryCombineTable] = useState<any>(null);
-  const [selectedCombineIds, setSelectedCombineIds] = useState<string[]>([]);
-
   // Menu item create/edit modal
   const [showMenuModal, setShowMenuModal] = useState(false);
   const [editMenuItem, setEditMenuItem] = useState<any>(null);
@@ -473,26 +468,26 @@ export default function OwnerDashboardPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Top Bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 glass-panel p-6 rounded-3xl border border-stone-800">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-stone-200 shadow-sm">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center text-stone-950 font-bold shadow-lg shadow-amber-500/20">
+          <div className="w-12 h-12 rounded-2xl bg-amber-600 flex items-center justify-center text-white font-bold shadow-md shadow-amber-600/20">
             <ShieldCheck className="w-6 h-6" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="font-serif text-xl sm:text-2xl font-bold text-stone-100">
+              <h1 className="font-serif text-xl sm:text-2xl font-bold text-stone-900">
                 The Roasted Bean • Owner Command Center
               </h1>
-              <span className="px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-500/50 text-[10px] font-bold uppercase">
+              <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-bold uppercase">
                 Live
               </span>
             </div>
-            <div className="text-xs text-stone-400 flex flex-wrap items-center gap-2 sm:gap-3 mt-1">
-              <span>Timezone: <strong className="text-amber-400">Asia/Kolkata (IST)</strong></span>
+            <div className="text-xs text-stone-600 flex flex-wrap items-center gap-2 sm:gap-3 mt-1">
+              <span>Timezone: <strong className="text-amber-800">Asia/Kolkata (IST)</strong></span>
               <span>•</span>
               <span>
                 Business Day:{" "}
-                <strong className="text-stone-200">
+                <strong className="text-stone-900">
                   {dashboardData?.businessDay || format(new Date(), "yyyy-MM-dd")}
                 </strong>{" "}
                 (Cutover 04:00 AM)
@@ -506,26 +501,26 @@ export default function OwnerDashboardPage() {
           <Link
             href="/"
             target="_blank"
-            className="px-3.5 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 border border-stone-700 text-stone-300 hover:text-white font-medium text-xs flex items-center gap-1.5 transition-colors"
+            className="px-3.5 py-2 rounded-xl bg-stone-50 hover:bg-stone-100 border border-stone-200 text-stone-700 hover:text-stone-900 font-medium text-xs flex items-center gap-1.5 transition-colors shadow-xs"
           >
             <span>🌐 View Customer Website</span>
           </Link>
           <button
             onClick={() => setShowWalkInModal(true)}
-            className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs shadow-md shadow-amber-500/20 flex items-center gap-1.5 transition-all"
+            className="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-md shadow-amber-600/20 flex items-center gap-1.5 transition-all"
           >
             <Plus className="w-4 h-4" /> Quick Walk-In
           </button>
           <button
             onClick={fetchAllData}
-            className="p-2 rounded-xl bg-stone-900 hover:bg-stone-800 border border-stone-800 text-stone-300 hover:text-white"
+            className="p-2 rounded-xl bg-stone-50 hover:bg-stone-100 border border-stone-200 text-stone-700 hover:text-stone-900 shadow-xs"
             title="Refresh data"
           >
             <RefreshCw className="w-4 h-4" />
           </button>
           <button
             onClick={handleLogout}
-            className="px-3 py-2 rounded-xl bg-red-950/60 hover:bg-red-900 border border-red-500/40 text-red-300 text-xs font-semibold flex items-center gap-1.5 transition-colors"
+            className="px-3 py-2 rounded-xl bg-red-50 hover:bg-red-100 border border-red-200 text-red-700 text-xs font-semibold flex items-center gap-1.5 transition-colors"
           >
             <LogOut className="w-4 h-4" /> Logout
           </button>
@@ -533,7 +528,7 @@ export default function OwnerDashboardPage() {
       </div>
 
       {/* Navigation Sub-Tabs */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-stone-800">
+      <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-stone-200">
         {[
           { id: "OVERVIEW", label: "Overview & KPIs", icon: TrendingUp },
           {
@@ -563,8 +558,8 @@ export default function OwnerDashboardPage() {
               onClick={() => setActiveTab(tab.id as any)}
               className={`px-4 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-2 ${
                 isActive
-                  ? "bg-amber-500 text-stone-950 shadow-lg shadow-amber-500/20"
-                  : "bg-stone-900 text-stone-400 hover:text-stone-200 border border-stone-800 hover:border-stone-700"
+                  ? "bg-amber-600 text-white shadow-md shadow-amber-600/20"
+                  : "bg-white text-stone-700 hover:text-stone-900 hover:bg-stone-50 border border-stone-200 shadow-sm"
               }`}
             >
               <Icon className="w-4 h-4" />
@@ -574,49 +569,49 @@ export default function OwnerDashboardPage() {
         })}
         <Link
           href="/owner/qr-codes"
-          className="px-4 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap bg-stone-900 hover:bg-stone-800 text-amber-400 hover:text-amber-300 border border-stone-800 flex items-center gap-2 shrink-0 transition-colors"
+          className="px-4 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap bg-white hover:bg-amber-50 text-amber-800 border border-amber-200 shadow-sm flex items-center gap-2 shrink-0 transition-colors"
         >
-          <QrCode className="w-4 h-4 text-amber-500" />
+          <QrCode className="w-4 h-4 text-amber-600" />
           <span>Print Table QR Cards &rarr;</span>
         </Link>
       </div>
 
       {/* Toast Alerts */}
       {successMsg && (
-        <div className="p-4 rounded-2xl bg-emerald-950/80 border border-emerald-500/50 text-emerald-200 text-xs flex items-center justify-between">
+        <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs flex items-center justify-between shadow-sm">
           <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
             <span>{successMsg}</span>
           </div>
-          <button onClick={() => setSuccessMsg("")} className="text-emerald-400 hover:text-white">
+          <button onClick={() => setSuccessMsg("")} className="text-emerald-700 hover:text-emerald-950">
             <X className="w-4 h-4" />
           </button>
         </div>
       )}
 
       {errorMsg && (
-        <div className="p-4 rounded-2xl bg-red-950/80 border border-red-500/50 text-red-200 text-xs flex items-center justify-between">
+        <div className="p-4 rounded-2xl bg-red-50 border border-red-200 text-red-900 text-xs flex items-center justify-between shadow-sm">
           <div className="flex items-center gap-2">
-            <AlertTriangle className="w-4 h-4 text-red-400" />
+            <AlertTriangle className="w-4 h-4 text-red-600" />
             <span>{errorMsg}</span>
           </div>
-          <button onClick={() => setErrorMsg("")} className="text-red-400 hover:text-white">
+          <button onClick={() => setErrorMsg("")} className="text-red-700 hover:text-red-950">
             <X className="w-4 h-4" />
           </button>
         </div>
       )}
 
-      {/* Active Alerts Banner (e.g. Late arrivals, pending approvals) */}
+      {/* Active Alerts Banner */}
       {dashboardData?.alerts && dashboardData.alerts.length > 0 && (
-        <div className="p-4 rounded-2xl bg-amber-950/50 border border-amber-500/40 space-y-2">
-          <div className="flex items-center gap-2 text-amber-400 text-xs font-bold uppercase tracking-wider">
-            <AlertCircle className="w-4 h-4" /> Live Operational Alerts ({dashboardData.alerts.length})
+        <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 space-y-2 shadow-sm">
+          <div className="flex items-center gap-2 text-amber-900 text-xs font-bold uppercase tracking-wider">
+            <AlertCircle className="w-4 h-4 text-amber-600" /> Live Operational Alerts ({dashboardData.alerts.length})
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {dashboardData.alerts.map((alt: any, idx: number) => (
               <div
                 key={idx}
-                className="p-3 rounded-xl bg-stone-900/90 border border-amber-500/30 text-xs text-stone-200 flex items-center justify-between gap-2"
+                className="p-3 rounded-xl bg-white border border-amber-200 text-xs text-stone-800 flex items-center justify-between gap-2 shadow-xs"
               >
                 <span>{alt.message}</span>
                 <button
@@ -628,7 +623,7 @@ export default function OwnerDashboardPage() {
                       setShowConfirmResModal(true);
                     }
                   }}
-                  className="px-2 py-1 rounded bg-amber-500 text-stone-950 font-bold text-[10px] shrink-0"
+                  className="px-2 py-1 rounded bg-amber-600 hover:bg-amber-700 text-white font-bold text-[10px] shrink-0"
                 >
                   Review
                 </button>
@@ -643,12 +638,12 @@ export default function OwnerDashboardPage() {
         <div className="space-y-8">
           {/* KPI Cards Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            <div className="glass-panel p-6 rounded-3xl border border-stone-800 space-y-2">
-              <div className="flex items-center justify-between text-stone-400 text-xs font-semibold uppercase tracking-wider">
+            <div className="bg-white p-6 rounded-3xl border border-stone-200 shadow-sm space-y-2">
+              <div className="flex items-center justify-between text-stone-500 text-xs font-semibold uppercase tracking-wider">
                 <span>Today's Collected Sales</span>
-                <DollarSign className="w-4 h-4 text-emerald-400" />
+                <DollarSign className="w-4 h-4 text-emerald-600" />
               </div>
-              <div className="font-serif text-3xl font-extrabold text-emerald-400">
+              <div className="font-serif text-3xl font-extrabold text-emerald-700">
                 ₹{dashboardData?.kpis?.collectedSales?.toFixed(2) || "0.00"}
               </div>
               <span className="text-[11px] text-stone-500">
@@ -656,12 +651,12 @@ export default function OwnerDashboardPage() {
               </span>
             </div>
 
-            <div className="glass-panel p-6 rounded-3xl border border-stone-800 space-y-2">
-              <div className="flex items-center justify-between text-stone-400 text-xs font-semibold uppercase tracking-wider">
+            <div className="bg-white p-6 rounded-3xl border border-stone-200 shadow-sm space-y-2">
+              <div className="flex items-center justify-between text-stone-500 text-xs font-semibold uppercase tracking-wider">
                 <span>Active Unpaid Floor Balance</span>
-                <CreditCard className="w-4 h-4 text-amber-400" />
+                <CreditCard className="w-4 h-4 text-amber-600" />
               </div>
-              <div className="font-serif text-3xl font-extrabold text-amber-400">
+              <div className="font-serif text-3xl font-extrabold text-amber-800">
                 ₹{dashboardData?.kpis?.unpaidBalance?.toFixed(2) || "0.00"}
               </div>
               <span className="text-[11px] text-stone-500">
@@ -669,12 +664,12 @@ export default function OwnerDashboardPage() {
               </span>
             </div>
 
-            <div className="glass-panel p-6 rounded-3xl border border-stone-800 space-y-2">
-              <div className="flex items-center justify-between text-stone-400 text-xs font-semibold uppercase tracking-wider">
+            <div className="bg-white p-6 rounded-3xl border border-stone-200 shadow-sm space-y-2">
+              <div className="flex items-center justify-between text-stone-500 text-xs font-semibold uppercase tracking-wider">
                 <span>Today's Reservations</span>
-                <Calendar className="w-4 h-4 text-blue-400" />
+                <Calendar className="w-4 h-4 text-blue-600" />
               </div>
-              <div className="font-serif text-3xl font-extrabold text-blue-400">
+              <div className="font-serif text-3xl font-extrabold text-blue-700">
                 {dashboardData?.kpis?.reservationsTodayCount || 0}
               </div>
               <span className="text-[11px] text-stone-500">
@@ -682,12 +677,12 @@ export default function OwnerDashboardPage() {
               </span>
             </div>
 
-            <div className="glass-panel p-6 rounded-3xl border border-stone-800 space-y-2">
-              <div className="flex items-center justify-between text-stone-400 text-xs font-semibold uppercase tracking-wider">
+            <div className="bg-white p-6 rounded-3xl border border-stone-200 shadow-sm space-y-2">
+              <div className="flex items-center justify-between text-stone-500 text-xs font-semibold uppercase tracking-wider">
                 <span>Active Kitchen Orders</span>
-                <Flame className="w-4 h-4 text-red-400" />
+                <Flame className="w-4 h-4 text-red-600" />
               </div>
-              <div className="font-serif text-3xl font-extrabold text-red-400">
+              <div className="font-serif text-3xl font-extrabold text-red-700">
                 {dashboardData?.kpis?.pendingOrdersCount + dashboardData?.kpis?.preparingOrdersCount || 0}
               </div>
               <span className="text-[11px] text-stone-500">
@@ -699,22 +694,22 @@ export default function OwnerDashboardPage() {
           {/* Quick Floor Snapshot & Live Orders Split */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Active Seated Tables */}
-            <div className="glass-panel p-6 rounded-3xl border border-stone-800 space-y-4">
+            <div className="bg-white p-6 rounded-3xl border border-stone-200 shadow-sm space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="font-serif text-base font-bold text-stone-100 flex items-center gap-2">
-                  <Layers className="w-4 h-4 text-amber-500" />
+                <h3 className="font-serif text-base font-bold text-stone-900 flex items-center gap-2">
+                  <Layers className="w-4 h-4 text-amber-600" />
                   Currently Occupied Tables ({dashboardData?.activeVisits?.length || 0})
                 </h3>
                 <button
                   onClick={() => setActiveTab("TABLES")}
-                  className="text-amber-400 hover:text-amber-300 text-xs font-semibold"
+                  className="text-amber-700 hover:text-amber-800 text-xs font-semibold"
                 >
                   View Floor &rarr;
                 </button>
               </div>
 
               {(!dashboardData?.activeVisits || dashboardData.activeVisits.length === 0) ? (
-                <div className="p-8 text-center bg-stone-900/40 rounded-2xl text-stone-500 text-xs">
+                <div className="p-8 text-center bg-stone-50 rounded-2xl text-stone-500 text-xs border border-stone-100">
                   No active visits at this moment. Register a walk-in or check in guests.
                 </div>
               ) : (
@@ -725,27 +720,27 @@ export default function OwnerDashboardPage() {
                     return (
                       <div
                         key={v.id}
-                        className="p-4 rounded-2xl bg-stone-900 border border-stone-800 flex items-center justify-between text-xs"
+                        className="p-4 rounded-2xl bg-stone-50 border border-stone-200 flex items-center justify-between text-xs"
                       >
                         <div>
-                          <div className="font-bold text-stone-100 text-sm flex items-center gap-2">
+                          <div className="font-bold text-stone-900 text-sm flex items-center gap-2">
                             <span>{v.table?.tableNumber}</span>
-                            <span className="font-normal text-stone-400">• {v.guestName || "Walk-in"}</span>
+                            <span className="font-normal text-stone-500">• {v.guestName || "Walk-in"}</span>
                           </div>
                           <div className="text-stone-500 text-[11px] mt-0.5">
-                            Visit Code: <strong className="text-amber-400 font-mono">{v.visitCode}</strong> • {v.orders?.length || 0} Orders Placed
+                            Visit Code: <strong className="text-amber-800 font-mono">{v.visitCode}</strong> • {v.orders?.length || 0} Orders Placed
                           </div>
                         </div>
 
                         <div className="text-right">
-                          <div className="font-serif font-bold text-stone-100 text-sm">
+                          <div className="font-serif font-bold text-stone-900 text-sm">
                             ₹{(v.bill?.totalAmount || 0).toFixed(2)}
                           </div>
                           <span
                             className={`text-[10px] font-bold uppercase ${
                               balance === 0 && v.bill?.totalAmount > 0
-                                ? "text-emerald-400"
-                                : "text-amber-400"
+                                ? "text-emerald-700"
+                                : "text-amber-800"
                             }`}
                           >
                             {balance === 0 && v.bill?.totalAmount > 0 ? "PAID" : `Unpaid: ₹${balance.toFixed(2)}`}
@@ -759,22 +754,22 @@ export default function OwnerDashboardPage() {
             </div>
 
             {/* Quick Live Orders Preview */}
-            <div className="glass-panel p-6 rounded-3xl border border-stone-800 space-y-4">
+            <div className="bg-white p-6 rounded-3xl border border-stone-200 shadow-sm space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="font-serif text-base font-bold text-stone-100 flex items-center gap-2">
-                  <Flame className="w-4 h-4 text-red-500" />
+                <h3 className="font-serif text-base font-bold text-stone-900 flex items-center gap-2">
+                  <Flame className="w-4 h-4 text-red-600" />
                   Live Kitchen Queue
                 </h3>
                 <button
                   onClick={() => setActiveTab("ORDERS")}
-                  className="text-amber-400 hover:text-amber-300 text-xs font-semibold"
+                  className="text-amber-700 hover:text-amber-800 text-xs font-semibold"
                 >
                   Open KDS Screen &rarr;
                 </button>
               </div>
 
               {(!liveOrders || liveOrders.filter((o) => o.status !== "SERVED" && o.status !== "CANCELLED").length === 0) ? (
-                <div className="p-8 text-center bg-stone-900/40 rounded-2xl text-stone-500 text-xs">
+                <div className="p-8 text-center bg-stone-50 rounded-2xl text-stone-500 text-xs border border-stone-100">
                   Kitchen queue is all caught up! No pending orders.
                 </div>
               ) : (
@@ -784,14 +779,14 @@ export default function OwnerDashboardPage() {
                     .map((ord: any) => (
                       <div
                         key={ord.id}
-                        className="p-4 rounded-2xl bg-stone-900 border border-stone-800 flex items-center justify-between text-xs"
+                        className="p-4 rounded-2xl bg-stone-50 border border-stone-200 flex items-center justify-between text-xs"
                       >
                         <div className="space-y-1">
-                          <div className="font-bold text-stone-100 flex items-center gap-2">
+                          <div className="font-bold text-stone-900 flex items-center gap-2">
                             <span>{ord.table?.tableNumber}</span>
-                            <span className="text-amber-400 font-mono text-xs">{ord.orderNumber}</span>
+                            <span className="text-amber-800 font-mono text-xs">{ord.orderNumber}</span>
                           </div>
-                          <div className="text-stone-300">
+                          <div className="text-stone-700">
                             {ord.items.map((i: any) => `${i.quantity}x ${i.itemNameSnapshot}`).join(", ")}
                           </div>
                         </div>
@@ -800,7 +795,7 @@ export default function OwnerDashboardPage() {
                           {ord.status === "PENDING" && (
                             <button
                               onClick={() => advanceOrderStatus(ord.id, "ACCEPTED")}
-                              className="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-[11px]"
+                              className="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-[11px] shadow-xs"
                             >
                               Accept
                             </button>
@@ -808,7 +803,7 @@ export default function OwnerDashboardPage() {
                           {ord.status === "ACCEPTED" && (
                             <button
                               onClick={() => advanceOrderStatus(ord.id, "PREPARING")}
-                              className="px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-bold text-[11px]"
+                              className="px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-bold text-[11px] shadow-xs"
                             >
                               Cook
                             </button>
@@ -816,7 +811,7 @@ export default function OwnerDashboardPage() {
                           {ord.status === "PREPARING" && (
                             <button
                               onClick={() => advanceOrderStatus(ord.id, "SERVED")}
-                              className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px]"
+                              className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] shadow-xs"
                             >
                               Serve
                             </button>
@@ -835,11 +830,11 @@ export default function OwnerDashboardPage() {
       {activeTab === "ORDERS" && (
         <div className="space-y-6">
           <div className="flex items-center justify-between">
-            <h3 className="font-serif text-xl font-bold text-stone-100 flex items-center gap-2">
-              <Flame className="w-5 h-5 text-red-500" />
+            <h3 className="font-serif text-xl font-bold text-stone-900 flex items-center gap-2">
+              <Flame className="w-5 h-5 text-red-600" />
               Kitchen Display Stream (KDS)
             </h3>
-            <span className="text-xs text-stone-400">
+            <span className="text-xs text-stone-500">
               Live updates every 5s • Audio alert ready
             </span>
           </div>
@@ -848,24 +843,24 @@ export default function OwnerDashboardPage() {
             {liveOrders.map((ord: any) => (
               <div
                 key={ord.id}
-                className={`glass-panel p-5 rounded-3xl border flex flex-col justify-between space-y-4 ${
+                className={`bg-white p-5 rounded-3xl border flex flex-col justify-between space-y-4 shadow-sm transition-all ${
                   ord.status === "PENDING"
-                    ? "border-amber-500/60 shadow-lg shadow-amber-500/10"
+                    ? "border-amber-400 ring-2 ring-amber-100"
                     : ord.status === "PREPARING"
-                    ? "border-purple-500/60 shadow-lg shadow-purple-500/10"
+                    ? "border-purple-400 ring-2 ring-purple-100"
                     : ord.status === "SERVED"
-                    ? "border-stone-800 opacity-70"
-                    : "border-stone-800 opacity-40"
+                    ? "border-stone-200 opacity-70"
+                    : "border-stone-200 opacity-40"
                 }`}
               >
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between border-b border-stone-800 pb-3">
+                  <div className="flex items-center justify-between border-b border-stone-100 pb-3">
                     <div className="flex items-center gap-2">
-                      <span className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 font-mono font-bold flex items-center justify-center text-sm">
+                      <span className="w-9 h-9 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 font-mono font-bold flex items-center justify-center text-sm">
                         {ord.table?.tableNumber}
                       </span>
                       <div>
-                        <div className="font-mono text-xs font-bold text-stone-200">
+                        <div className="font-mono text-xs font-bold text-stone-900">
                           {ord.orderNumber}
                         </div>
                         <div className="text-[11px] text-stone-500">
@@ -877,14 +872,14 @@ export default function OwnerDashboardPage() {
                     <span
                       className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
                         ord.status === "PENDING"
-                          ? "bg-amber-950 text-amber-300 border border-amber-500"
+                          ? "bg-amber-50 text-amber-800 border border-amber-200"
                           : ord.status === "ACCEPTED"
-                          ? "bg-blue-950 text-blue-300 border border-blue-500"
+                          ? "bg-blue-50 text-blue-800 border border-blue-200"
                           : ord.status === "PREPARING"
-                          ? "bg-purple-950 text-purple-300 border border-purple-500"
+                          ? "bg-purple-50 text-purple-800 border border-purple-200"
                           : ord.status === "SERVED"
-                          ? "bg-emerald-950 text-emerald-300 border border-emerald-500"
-                          : "bg-red-950 text-red-400"
+                          ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
+                          : "bg-red-50 text-red-800 border border-red-200"
                       }`}
                     >
                       {ord.status}
@@ -896,16 +891,16 @@ export default function OwnerDashboardPage() {
                     {ord.items.map((it: any) => (
                       <div
                         key={it.id}
-                        className={`p-2 rounded-xl bg-stone-900 border border-stone-800 ${
+                        className={`p-2 rounded-xl bg-stone-50 border border-stone-200 ${
                           it.status === "CANCELLED" ? "opacity-40 line-through" : ""
                         }`}
                       >
-                        <div className="flex items-center justify-between font-bold text-stone-200">
+                        <div className="flex items-center justify-between font-bold text-stone-900">
                           <span>{it.quantity}x {it.itemNameSnapshot}</span>
-                          <span className="font-mono text-amber-400">₹{it.subtotalSnapshot.toFixed(0)}</span>
+                          <span className="font-mono text-amber-800">₹{it.subtotalSnapshot.toFixed(0)}</span>
                         </div>
                         {it.customInstructions && (
-                          <div className="text-[11px] text-amber-300 mt-1 italic">
+                          <div className="text-[11px] text-amber-800 mt-1 italic">
                             Instruction: &quot;{it.customInstructions}&quot;
                           </div>
                         )}
@@ -914,18 +909,18 @@ export default function OwnerDashboardPage() {
                   </div>
 
                   {ord.notes && (
-                    <div className="text-[11px] text-stone-400 italic bg-stone-950/60 p-2 rounded-xl border border-stone-800">
+                    <div className="text-[11px] text-stone-600 italic bg-stone-50 p-2 rounded-xl border border-stone-200">
                       Table Note: {ord.notes}
                     </div>
                   )}
                 </div>
 
                 {/* State Transition Actions */}
-                <div className="pt-3 border-t border-stone-800 flex items-center justify-between gap-2">
+                <div className="pt-3 border-t border-stone-100 flex items-center justify-between gap-2">
                   {ord.status !== "CANCELLED" && ord.status !== "SERVED" && (
                     <button
                       onClick={() => cancelOrder(ord.id)}
-                      className="px-3 py-2 rounded-xl bg-red-950/60 hover:bg-red-900 text-red-300 text-[11px] font-semibold"
+                      className="px-3 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 text-[11px] font-semibold border border-red-200"
                     >
                       Cancel Order
                     </button>
@@ -935,7 +930,7 @@ export default function OwnerDashboardPage() {
                     {ord.status === "PENDING" && (
                       <button
                         onClick={() => advanceOrderStatus(ord.id, "ACCEPTED")}
-                        className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs"
+                        className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-xs"
                       >
                         Accept Order
                       </button>
@@ -943,7 +938,7 @@ export default function OwnerDashboardPage() {
                     {ord.status === "ACCEPTED" && (
                       <button
                         onClick={() => advanceOrderStatus(ord.id, "PREPARING")}
-                        className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs"
+                        className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs shadow-xs"
                       >
                         Start Cooking
                       </button>
@@ -951,13 +946,13 @@ export default function OwnerDashboardPage() {
                     {ord.status === "PREPARING" && (
                       <button
                         onClick={() => advanceOrderStatus(ord.id, "SERVED")}
-                        className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs"
+                        className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs"
                       >
                         Mark Served
                       </button>
                     )}
                     {ord.status === "SERVED" && (
-                      <span className="text-emerald-400 text-xs font-semibold flex items-center gap-1">
+                      <span className="text-emerald-700 text-xs font-semibold flex items-center gap-1">
                         <CheckCircle2 className="w-3.5 h-3.5" /> Delivered to Table
                       </span>
                     )}
@@ -974,10 +969,10 @@ export default function OwnerDashboardPage() {
         <div className="space-y-6">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
-              <h3 className="font-serif text-xl font-bold text-stone-100">
+              <h3 className="font-serif text-xl font-bold text-stone-900">
                 Floor Plan & Seated Tables
               </h3>
-              <p className="text-xs text-stone-400">
+              <p className="text-xs text-stone-600">
                 Monitor live visits, generate QR cards, manage walk-in check-ins, or combine seating for large groups.
               </p>
             </div>
@@ -986,14 +981,14 @@ export default function OwnerDashboardPage() {
               <Link
                 href="/owner/qr-codes"
                 target="_blank"
-                className="px-3.5 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-stone-200 border border-stone-800 hover:border-amber-500/50 font-semibold text-xs flex items-center gap-1.5 transition-all"
+                className="px-3.5 py-2 rounded-xl bg-white hover:bg-stone-50 text-stone-800 border border-stone-200 hover:border-amber-400 font-semibold text-xs flex items-center gap-1.5 transition-all shadow-sm"
               >
-                <Printer className="w-4 h-4 text-amber-500" />
+                <Printer className="w-4 h-4 text-amber-600" />
                 <span>Print Table QR Stands</span>
               </Link>
               <button
                 onClick={() => setShowWalkInModal(true)}
-                className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs shadow-md shadow-amber-500/20 flex items-center gap-1.5"
+                className="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-md shadow-amber-600/20 flex items-center gap-1.5"
               >
                 <Plus className="w-4 h-4" /> Check In Walk-In
               </button>
@@ -1015,21 +1010,21 @@ export default function OwnerDashboardPage() {
               return (
                 <div
                   key={tbl.id}
-                  className={`glass-panel p-5 rounded-3xl border flex flex-col justify-between space-y-4 transition-all ${
+                  className={`bg-white p-5 rounded-3xl border flex flex-col justify-between space-y-4 transition-all shadow-sm ${
                     activeVisit
-                      ? "border-amber-500/60 shadow-lg shadow-amber-500/10"
-                      : "border-stone-800"
+                      ? "border-amber-400 ring-2 ring-amber-100"
+                      : "border-stone-200"
                   }`}
                 >
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <span className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 font-mono font-bold flex items-center justify-center text-sm">
+                        <span className="w-9 h-9 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 font-mono font-bold flex items-center justify-center text-sm">
                           {tbl.tableNumber}
                         </span>
                         <div>
-                          <h4 className="font-bold text-stone-100 text-sm">{tbl.name}</h4>
-                          <span className="text-[11px] text-stone-400">
+                          <h4 className="font-bold text-stone-900 text-sm">{tbl.name}</h4>
+                          <span className="text-[11px] text-stone-500">
                             {tbl.section} • {tbl.capacityMin}–{tbl.capacityMax} Guests
                           </span>
                         </div>
@@ -1038,8 +1033,8 @@ export default function OwnerDashboardPage() {
                       <span
                         className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase ${
                           activeVisit
-                            ? "bg-amber-950 text-amber-300 border border-amber-500/50 animate-pulse"
-                            : "bg-emerald-950 text-emerald-300 border border-emerald-500/50"
+                            ? "bg-amber-50 text-amber-800 border border-amber-200"
+                            : "bg-emerald-50 text-emerald-800 border border-emerald-200"
                         }`}
                       >
                         {activeVisit ? "Occupied" : "Free"}
@@ -1048,26 +1043,26 @@ export default function OwnerDashboardPage() {
 
                     {/* Active visit details */}
                     {activeVisit ? (
-                      <div className="p-3 rounded-2xl bg-stone-900 border border-stone-800 space-y-2 text-xs">
+                      <div className="p-3 rounded-2xl bg-stone-50 border border-stone-200 space-y-2 text-xs">
                         <div className="flex justify-between">
-                          <span className="text-stone-400">Guest:</span>
-                          <strong className="text-stone-200">{activeVisit.guestName || "Walk-in"}</strong>
+                          <span className="text-stone-500">Guest:</span>
+                          <strong className="text-stone-900">{activeVisit.guestName || "Walk-in"}</strong>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-stone-400">Visit Code (PIN):</span>
-                          <strong className="text-amber-400 font-mono text-sm">{activeVisit.visitCode}</strong>
+                          <span className="text-stone-500">Visit Code (PIN):</span>
+                          <strong className="text-amber-800 font-mono text-sm">{activeVisit.visitCode}</strong>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-stone-400">Orders / Bill:</span>
-                          <span className="font-mono text-stone-200">
+                          <span className="text-stone-500">Orders / Bill:</span>
+                          <span className="font-mono text-stone-900">
                             {activeVisit.orders?.length || 0} ords • ₹{billTotal.toFixed(2)}
                           </span>
                         </div>
-                        <div className="flex justify-between pt-1 border-t border-stone-800">
-                          <span className="text-stone-400">Remaining Balance:</span>
+                        <div className="flex justify-between pt-1 border-t border-stone-200">
+                          <span className="text-stone-500">Remaining Balance:</span>
                           <strong
                             className={`font-mono ${
-                              balance === 0 && billTotal > 0 ? "text-emerald-400" : "text-amber-400"
+                              balance === 0 && billTotal > 0 ? "text-emerald-700" : "text-amber-800"
                             }`}
                           >
                             ₹{balance.toFixed(2)}
@@ -1075,21 +1070,21 @@ export default function OwnerDashboardPage() {
                         </div>
                       </div>
                     ) : (
-                      <div className="p-4 rounded-2xl bg-stone-900/40 border border-stone-800/60 text-center text-xs text-stone-500 space-y-1">
+                      <div className="p-4 rounded-2xl bg-stone-50/70 border border-stone-100 text-center text-xs text-stone-500 space-y-1">
                         <div>Table ready for guests.</div>
-                        <div className="text-[11px] text-stone-600">Setup & cleanup verified</div>
+                        <div className="text-[11px] text-stone-400">Setup & cleanup verified</div>
                       </div>
                     )}
                   </div>
 
                   {/* Floor Actions */}
-                  <div className="pt-3 border-t border-stone-800 flex flex-wrap items-center justify-between gap-2">
+                  <div className="pt-3 border-t border-stone-100 flex flex-wrap items-center justify-between gap-2">
                     <button
                       onClick={() => openQrCodeModal(tbl)}
-                      className="p-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-white text-xs flex items-center gap-1 border border-stone-800"
+                      className="p-2 rounded-xl bg-stone-50 hover:bg-stone-100 text-stone-700 hover:text-stone-900 text-xs flex items-center gap-1 border border-stone-200"
                       title="View QR Code"
                     >
-                      <QrCode className="w-4 h-4 text-emerald-400" />
+                      <QrCode className="w-4 h-4 text-emerald-600" />
                     </button>
 
                     {activeVisit ? (
@@ -1100,7 +1095,7 @@ export default function OwnerDashboardPage() {
                             setPaymentAmount(balance > 0 ? balance : billTotal);
                             setShowPaymentModal(true);
                           }}
-                          className="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs flex items-center gap-1"
+                          className="px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs flex items-center gap-1 shadow-xs"
                         >
                           <CreditCard className="w-3.5 h-3.5" /> Settle
                         </button>
@@ -1109,7 +1104,7 @@ export default function OwnerDashboardPage() {
                             setVisitToClose(activeVisit);
                             setShowCloseVisitModal(true);
                           }}
-                          className="px-3 py-1.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-white border border-stone-800 text-xs font-semibold"
+                          className="px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 border border-stone-200 text-xs font-semibold"
                         >
                           Close Table
                         </button>
@@ -1120,7 +1115,7 @@ export default function OwnerDashboardPage() {
                           setWalkInTableId(tbl.id);
                           setShowWalkInModal(true);
                         }}
-                        className="px-3 py-1.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-amber-400 text-xs font-semibold border border-stone-800"
+                        className="px-3 py-1.5 rounded-xl bg-stone-50 hover:bg-amber-50 text-amber-800 text-xs font-semibold border border-stone-200 hover:border-amber-300"
                       >
                         Seat Walk-in
                       </button>
@@ -1137,7 +1132,7 @@ export default function OwnerDashboardPage() {
       {activeTab === "RESERVATIONS" && (
         <div className="space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <h3 className="font-serif text-xl font-bold text-stone-100">
+            <h3 className="font-serif text-xl font-bold text-stone-900">
               Reservation Management Queue
             </h3>
 
@@ -1150,8 +1145,8 @@ export default function OwnerDashboardPage() {
                     onClick={() => setResStatusFilter(st)}
                     className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
                       resStatusFilter === st
-                        ? "bg-amber-500 text-stone-950"
-                        : "bg-stone-900 text-stone-400 hover:text-stone-200 border border-stone-800"
+                        ? "bg-amber-600 text-white font-bold shadow-sm"
+                        : "bg-white text-stone-700 hover:text-stone-900 border border-stone-200 shadow-sm"
                     }`}
                   >
                     {st}
@@ -1169,7 +1164,7 @@ export default function OwnerDashboardPage() {
               placeholder="Search reference, guest name, phone..."
               value={resSearch}
               onChange={(e) => setResSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 rounded-xl bg-stone-900 border border-stone-800 focus:border-amber-500 focus:outline-none text-stone-100 text-xs"
+              className="w-full pl-10 pr-4 py-2 rounded-xl bg-white border border-stone-200 focus:border-amber-500 focus:outline-none text-stone-900 text-xs shadow-sm"
             />
           </div>
 
@@ -1191,31 +1186,31 @@ export default function OwnerDashboardPage() {
               .map((res: any) => (
                 <div
                   key={res.id}
-                  className="glass-panel p-5 rounded-3xl border border-stone-800 flex flex-col md:flex-row md:items-center justify-between gap-4"
+                  className="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4"
                 >
                   <div className="space-y-2">
                     <div className="flex flex-wrap items-center gap-3">
-                      <span className="font-mono text-sm font-bold text-amber-400">
+                      <span className="font-mono text-sm font-bold text-amber-800">
                         {res.bookingReference}
                       </span>
-                      <span className="font-bold text-stone-100 text-base">{res.guestName}</span>
-                      <span className="text-xs text-stone-400">({res.guestPhone})</span>
+                      <span className="font-bold text-stone-900 text-base">{res.guestName}</span>
+                      <span className="text-xs text-stone-500">({res.guestPhone})</span>
                       <span
                         className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${
                           res.status === "REQUESTED"
-                            ? "bg-amber-950 text-amber-300 border border-amber-500/50"
+                            ? "bg-amber-50 text-amber-800 border border-amber-200"
                             : res.status === "CONFIRMED"
-                            ? "bg-emerald-950 text-emerald-300 border border-emerald-500/50"
+                            ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
                             : res.status === "CHECKED_IN"
-                            ? "bg-blue-950 text-blue-300 border border-blue-500/50"
-                            : "bg-stone-800 text-stone-400"
+                            ? "bg-blue-50 text-blue-800 border border-blue-200"
+                            : "bg-stone-100 text-stone-600"
                         }`}
                       >
                         {res.status}
                       </span>
                     </div>
 
-                    <div className="text-xs text-stone-400 flex flex-wrap items-center gap-3">
+                    <div className="text-xs text-stone-600 flex flex-wrap items-center gap-3">
                       <span>
                         📅 {format(new Date(res.startDateTime), "dd MMM yyyy, hh:mm a")} ({res.durationMinutes} mins)
                       </span>
@@ -1223,20 +1218,20 @@ export default function OwnerDashboardPage() {
                       <span>👥 {res.guestCount} Guests</span>
                       <span>•</span>
                       <span>
-                        🪑 Table: <strong className="text-stone-200">{res.table?.tableNumber || "Unassigned"}</strong>
+                        🪑 Table: <strong className="text-stone-900">{res.table?.tableNumber || "Unassigned"}</strong>
                       </span>
                       {res.occasion && <span>• 🎉 {res.occasion}</span>}
                     </div>
 
                     {res.specialRequest && (
-                      <div className="text-xs text-amber-200 bg-amber-950/40 p-2.5 rounded-xl border border-amber-900/60 flex items-center justify-between gap-4">
+                      <div className="text-xs text-amber-900 bg-amber-50 p-2.5 rounded-xl border border-amber-200 flex items-center justify-between gap-4">
                         <span>Special Request: &quot;{res.specialRequest}&quot;</span>
                         {res.specialRequestApproved ? (
-                          <span className="text-[10px] font-bold text-emerald-400 uppercase">
+                          <span className="text-[10px] font-bold text-emerald-700 uppercase">
                             ✓ Accepted
                           </span>
                         ) : (
-                          <span className="text-[10px] font-bold text-amber-400 uppercase">
+                          <span className="text-[10px] font-bold text-amber-800 uppercase">
                             ⏳ Needs Review
                           </span>
                         )}
@@ -1255,7 +1250,7 @@ export default function OwnerDashboardPage() {
                             setApproveSpecialReq(true);
                             setShowConfirmResModal(true);
                           }}
-                          className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1"
+                          className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1 shadow-xs"
                         >
                           <Check className="w-3.5 h-3.5" /> Accept & Confirm
                         </button>
@@ -1264,7 +1259,7 @@ export default function OwnerDashboardPage() {
                             setSelectedRes(res);
                             setShowRejectResModal(true);
                           }}
-                          className="px-3 py-2 rounded-xl bg-red-950 hover:bg-red-900 text-red-300 font-semibold text-xs border border-red-500/40"
+                          className="px-3 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 font-semibold text-xs border border-red-200"
                         >
                           Reject
                         </button>
@@ -1274,7 +1269,7 @@ export default function OwnerDashboardPage() {
                     {res.status === "CONFIRMED" && (
                       <button
                         onClick={() => checkInReservation(res.id, res.tableId)}
-                        className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs flex items-center gap-1.5 shadow-md shadow-amber-500/20"
+                        className="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-md shadow-amber-600/20"
                       >
                         <UtensilsCrossed className="w-3.5 h-3.5" /> Check-in Guest
                       </button>
@@ -1291,10 +1286,10 @@ export default function OwnerDashboardPage() {
         <div className="space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h3 className="font-serif text-xl font-bold text-stone-100">
+              <h3 className="font-serif text-xl font-bold text-stone-900">
                 Consolidated Bills & Payments History
               </h3>
-              <p className="text-xs text-stone-400">
+              <p className="text-xs text-stone-600">
                 Itemized bills snapshot prices at order time. Record full or partial payments in Cash, UPI, or Card.
               </p>
             </div>
@@ -1306,8 +1301,8 @@ export default function OwnerDashboardPage() {
                   onClick={() => setBillStatusFilter(st)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-semibold ${
                     billStatusFilter === st
-                      ? "bg-amber-500 text-stone-950"
-                      : "bg-stone-900 text-stone-400 border border-stone-800"
+                      ? "bg-amber-600 text-white font-bold shadow-sm"
+                      : "bg-white text-stone-700 border border-stone-200 shadow-sm"
                   }`}
                 >
                   {st}
@@ -1328,14 +1323,14 @@ export default function OwnerDashboardPage() {
                 return (
                   <div
                     key={b.id}
-                    className="glass-panel p-6 rounded-3xl border border-stone-800 space-y-4"
+                    className="bg-white p-6 rounded-3xl border border-stone-200 shadow-sm space-y-4"
                   >
-                    <div className="flex flex-wrap items-center justify-between gap-3 border-b border-stone-800 pb-3">
+                    <div className="flex flex-wrap items-center justify-between gap-3 border-b border-stone-100 pb-3">
                       <div>
-                        <div className="font-mono text-base font-bold text-amber-400">{b.billNumber}</div>
-                        <div className="text-xs text-stone-400">
-                          Table: <strong className="text-stone-200">{b.table?.tableNumber}</strong> • Guest:{" "}
-                          <strong className="text-stone-200">{b.visit?.guestName || "Guest"}</strong>
+                        <div className="font-mono text-base font-bold text-amber-800">{b.billNumber}</div>
+                        <div className="text-xs text-stone-600">
+                          Table: <strong className="text-stone-900">{b.table?.tableNumber}</strong> • Guest:{" "}
+                          <strong className="text-stone-900">{b.visit?.guestName || "Guest"}</strong>
                         </div>
                       </div>
 
@@ -1343,10 +1338,10 @@ export default function OwnerDashboardPage() {
                         <span
                           className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
                             b.status === "PAID"
-                              ? "bg-emerald-950 text-emerald-400 border border-emerald-500/50"
+                              ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
                               : b.status === "PARTIALLY_PAID"
-                              ? "bg-amber-950 text-amber-400 border border-amber-500/50"
-                              : "bg-red-950 text-red-400 border border-red-500/50"
+                              ? "bg-amber-50 text-amber-800 border border-amber-200"
+                              : "bg-red-50 text-red-800 border border-red-200"
                           }`}
                         >
                           {b.status}
@@ -1359,7 +1354,7 @@ export default function OwnerDashboardPage() {
                               setPaymentAmount(balance);
                               setShowPaymentModal(true);
                             }}
-                            className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs shadow-md shadow-amber-500/20 flex items-center gap-1.5"
+                            className="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-md shadow-amber-600/20 flex items-center gap-1.5"
                           >
                             <CreditCard className="w-3.5 h-3.5" /> Record Payment
                           </button>
@@ -1369,21 +1364,21 @@ export default function OwnerDashboardPage() {
 
                     {/* Breakdown */}
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
-                      <div className="p-3 rounded-xl bg-stone-900 border border-stone-800">
+                      <div className="p-3 rounded-xl bg-stone-50 border border-stone-200">
                         <span className="text-stone-500 block">Subtotal:</span>
-                        <strong className="text-stone-200 font-mono text-sm">₹{b.subtotal.toFixed(2)}</strong>
+                        <strong className="text-stone-900 font-mono text-sm">₹{b.subtotal.toFixed(2)}</strong>
                       </div>
-                      <div className="p-3 rounded-xl bg-stone-900 border border-stone-800">
+                      <div className="p-3 rounded-xl bg-stone-50 border border-stone-200">
                         <span className="text-stone-500 block">GST ({b.taxRatePercent}%):</span>
-                        <strong className="text-stone-200 font-mono text-sm">₹{b.taxAmount.toFixed(2)}</strong>
+                        <strong className="text-stone-900 font-mono text-sm">₹{b.taxAmount.toFixed(2)}</strong>
                       </div>
-                      <div className="p-3 rounded-xl bg-stone-900 border border-stone-800">
+                      <div className="p-3 rounded-xl bg-stone-50 border border-stone-200">
                         <span className="text-stone-500 block">Total Billed:</span>
-                        <strong className="text-amber-400 font-mono text-sm">₹{b.totalAmount.toFixed(2)}</strong>
+                        <strong className="text-amber-800 font-mono text-sm">₹{b.totalAmount.toFixed(2)}</strong>
                       </div>
-                      <div className="p-3 rounded-xl bg-stone-900 border border-stone-800">
+                      <div className="p-3 rounded-xl bg-stone-50 border border-stone-200">
                         <span className="text-stone-500 block">Paid / Remaining:</span>
-                        <strong className="text-emerald-400 font-mono text-sm">
+                        <strong className="text-emerald-700 font-mono text-sm">
                           ₹{paid.toFixed(2)} / ₹{balance.toFixed(2)}
                         </strong>
                       </div>
@@ -1391,13 +1386,13 @@ export default function OwnerDashboardPage() {
 
                     {/* Payments log */}
                     {b.payments && b.payments.length > 0 && (
-                      <div className="text-xs text-stone-400 space-y-1">
-                        <span className="font-semibold text-stone-300">Payment Transactions:</span>
+                      <div className="text-xs text-stone-600 space-y-1">
+                        <span className="font-semibold text-stone-900">Payment Transactions:</span>
                         {b.payments.map((p: any) => (
                           <div key={p.id} className="flex items-center gap-2">
                             <span>• {p.paymentMethod}</span>
                             <span>(₹{p.amount.toFixed(2)})</span>
-                            <span className="text-stone-500">at {format(new Date(p.paidAt), "hh:mm a")}</span>
+                            <span className="text-stone-400">at {format(new Date(p.paidAt), "hh:mm a")}</span>
                             {p.referenceNote && <span className="italic text-stone-500">- {p.referenceNote}</span>}
                           </div>
                         ))}
@@ -1415,10 +1410,10 @@ export default function OwnerDashboardPage() {
         <div className="space-y-6">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
-              <h3 className="font-serif text-xl font-bold text-stone-100">
+              <h3 className="font-serif text-xl font-bold text-stone-900">
                 Menu & Real-Time Availability
               </h3>
-              <p className="text-xs text-stone-400">
+              <p className="text-xs text-stone-600">
                 Instantly toggle In-Stock / Sold-Out or update dish prices and descriptions.
               </p>
             </div>
@@ -1433,7 +1428,7 @@ export default function OwnerDashboardPage() {
                 setMenuIsVeg(true);
                 setShowMenuModal(true);
               }}
-              className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs shadow-md shadow-amber-500/20 flex items-center gap-1.5"
+              className="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-md shadow-amber-600/20 flex items-center gap-1.5"
             >
               <Plus className="w-4 h-4" /> Add Menu Item
             </button>
@@ -1441,8 +1436,8 @@ export default function OwnerDashboardPage() {
 
           <div className="space-y-6">
             {menuCategories.map((cat: any) => (
-              <div key={cat.id} className="glass-panel p-6 rounded-3xl border border-stone-800 space-y-4">
-                <h4 className="font-serif text-lg font-bold text-amber-400 border-b border-stone-800 pb-2">
+              <div key={cat.id} className="bg-white p-6 rounded-3xl border border-stone-200 shadow-sm space-y-4">
+                <h4 className="font-serif text-lg font-bold text-amber-800 border-b border-stone-100 pb-2">
                   {cat.name} ({cat.items?.length || 0} Items)
                 </h4>
 
@@ -1450,23 +1445,23 @@ export default function OwnerDashboardPage() {
                   {cat.items?.map((item: any) => (
                     <div
                       key={item.id}
-                      className="p-4 rounded-2xl bg-stone-900 border border-stone-800 flex flex-col justify-between space-y-3"
+                      className="p-4 rounded-2xl bg-stone-50 border border-stone-200 flex flex-col justify-between space-y-3"
                     >
                       <div className="space-y-1">
                         <div className="flex items-center justify-between">
-                          <strong className="text-stone-100 text-sm">{item.name}</strong>
-                          <span className="font-serif font-bold text-amber-400">₹{item.price}</span>
+                          <strong className="text-stone-900 text-sm">{item.name}</strong>
+                          <span className="font-serif font-bold text-amber-800">₹{item.price}</span>
                         </div>
-                        <p className="text-xs text-stone-400 line-clamp-2">{item.description}</p>
+                        <p className="text-xs text-stone-600 line-clamp-2">{item.description}</p>
                       </div>
 
-                      <div className="pt-2 border-t border-stone-800 flex items-center justify-between">
+                      <div className="pt-2 border-t border-stone-200 flex items-center justify-between">
                         <button
                           onClick={() => toggleItemAvailability(item)}
                           className={`px-3 py-1 rounded-xl text-xs font-bold transition-all ${
                             item.isAvailable
-                              ? "bg-emerald-950 text-emerald-400 border border-emerald-500/40"
-                              : "bg-red-950 text-red-400 border border-red-500/40"
+                              ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
+                              : "bg-red-50 text-red-800 border border-red-200"
                           }`}
                         >
                           {item.isAvailable ? "In Stock" : "Sold Out"}
@@ -1487,7 +1482,7 @@ export default function OwnerDashboardPage() {
                             setMenuPhotoUrl(item.photoUrl || "");
                             setShowMenuModal(true);
                           }}
-                          className="text-stone-400 hover:text-white text-xs"
+                          className="text-stone-600 hover:text-stone-900 text-xs font-medium"
                         >
                           Edit
                         </button>
@@ -1504,34 +1499,34 @@ export default function OwnerDashboardPage() {
       {/* ----------------- SUB-TAB 7: SETTINGS & CLOSURES ----------------- */}
       {activeTab === "SETTINGS" && settings && (
         <div className="space-y-8">
-          <form onSubmit={handleSaveSettings} className="glass-panel p-6 sm:p-8 rounded-3xl border border-stone-800 space-y-6">
-            <h3 className="font-serif text-xl font-bold text-stone-100 border-b border-stone-800 pb-3">
+          <form onSubmit={handleSaveSettings} className="bg-white p-6 sm:p-8 rounded-3xl border border-stone-200 shadow-sm space-y-6">
+            <h3 className="font-serif text-xl font-bold text-stone-900 border-b border-stone-100 pb-3">
               Café Operational Parameters & Buffers
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-stone-300">Daily Opening Time (HH:mm)</label>
+                <label className="text-xs font-semibold text-stone-700">Daily Opening Time (HH:mm)</label>
                 <input
                   type="time"
                   value={settings.openingTime}
                   onChange={(e) => setSettings({ ...settings, openingTime: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl bg-stone-900 border border-stone-800 text-stone-100 text-xs"
+                  className="w-full px-3 py-2 rounded-xl bg-stone-50 border border-stone-200 text-stone-900 text-xs"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-stone-300">Daily Closing Time (HH:mm)</label>
+                <label className="text-xs font-semibold text-stone-700">Daily Closing Time (HH:mm)</label>
                 <input
                   type="time"
                   value={settings.closingTime}
                   onChange={(e) => setSettings({ ...settings, closingTime: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl bg-stone-900 border border-stone-800 text-stone-100 text-xs"
+                  className="w-full px-3 py-2 rounded-xl bg-stone-50 border border-stone-200 text-stone-900 text-xs"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-stone-300">Business Day Cutoff Hour (e.g. 4 for 4 AM)</label>
+                <label className="text-xs font-semibold text-stone-700">Business Day Cutoff Hour (e.g. 4 for 4 AM)</label>
                 <input
                   type="number"
                   min={0}
@@ -1540,14 +1535,14 @@ export default function OwnerDashboardPage() {
                   onChange={(e) =>
                     setSettings({ ...settings, businessDayCutoffHour: Number(e.target.value) })
                   }
-                  className="w-full px-3 py-2 rounded-xl bg-stone-900 border border-stone-800 text-stone-100 text-xs"
+                  className="w-full px-3 py-2 rounded-xl bg-stone-50 border border-stone-200 text-stone-900 text-xs"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-stone-300">Setup Buffer Before (Mins)</label>
+                <label className="text-xs font-semibold text-stone-700">Setup Buffer Before (Mins)</label>
                 <input
                   type="number"
                   min={0}
@@ -1556,12 +1551,12 @@ export default function OwnerDashboardPage() {
                   onChange={(e) =>
                     setSettings({ ...settings, bufferBeforeMinutes: Number(e.target.value) })
                   }
-                  className="w-full px-3 py-2 rounded-xl bg-stone-900 border border-stone-800 text-stone-100 text-xs"
+                  className="w-full px-3 py-2 rounded-xl bg-stone-50 border border-stone-200 text-stone-900 text-xs"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-stone-300">Cleanup Buffer After (Mins)</label>
+                <label className="text-xs font-semibold text-stone-700">Cleanup Buffer After (Mins)</label>
                 <input
                   type="number"
                   min={0}
@@ -1570,12 +1565,12 @@ export default function OwnerDashboardPage() {
                   onChange={(e) =>
                     setSettings({ ...settings, bufferAfterMinutes: Number(e.target.value) })
                   }
-                  className="w-full px-3 py-2 rounded-xl bg-stone-900 border border-stone-800 text-stone-100 text-xs"
+                  className="w-full px-3 py-2 rounded-xl bg-stone-50 border border-stone-200 text-stone-900 text-xs"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-stone-300">Late Grace Period (Mins)</label>
+                <label className="text-xs font-semibold text-stone-700">Late Grace Period (Mins)</label>
                 <input
                   type="number"
                   min={5}
@@ -1584,7 +1579,7 @@ export default function OwnerDashboardPage() {
                   onChange={(e) =>
                     setSettings({ ...settings, gracePeriodMinutes: Number(e.target.value) })
                   }
-                  className="w-full px-3 py-2 rounded-xl bg-stone-900 border border-stone-800 text-stone-100 text-xs"
+                  className="w-full px-3 py-2 rounded-xl bg-stone-50 border border-stone-200 text-stone-900 text-xs"
                 />
               </div>
             </div>
@@ -1592,7 +1587,7 @@ export default function OwnerDashboardPage() {
             <div className="flex justify-end pt-3">
               <button
                 type="submit"
-                className="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs shadow-md"
+                className="px-6 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-md shadow-amber-600/20"
               >
                 Save Settings
               </button>
@@ -1600,19 +1595,19 @@ export default function OwnerDashboardPage() {
           </form>
 
           {/* Printable QR Tent Cards Section */}
-          <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-stone-800 space-y-4">
+          <div className="bg-white p-6 sm:p-8 rounded-3xl border border-stone-200 shadow-sm space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h4 className="font-serif text-lg font-bold text-stone-100">
+                <h4 className="font-serif text-lg font-bold text-stone-900">
                   Table QR Tent Cards (Physical Printing)
                 </h4>
-                <p className="text-xs text-stone-400">
+                <p className="text-xs text-stone-600">
                   Generate high resolution printable cards for each table.
                 </p>
               </div>
               <button
                 onClick={() => window.print()}
-                className="px-4 py-2 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-semibold flex items-center gap-1.5"
+                className="px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs font-semibold flex items-center gap-1.5 border border-stone-200"
               >
                 <Printer className="w-4 h-4" /> Print All QR Cards
               </button>
@@ -1622,13 +1617,13 @@ export default function OwnerDashboardPage() {
               {tables.map((t: any) => (
                 <div
                   key={t.id}
-                  className="p-4 rounded-2xl bg-stone-900 border border-stone-800 text-center space-y-2"
+                  className="p-4 rounded-2xl bg-stone-50 border border-stone-200 text-center space-y-2"
                 >
-                  <strong className="text-stone-100 text-sm block">{t.tableNumber}</strong>
-                  <span className="text-[11px] text-stone-400 block">{t.name}</span>
+                  <strong className="text-stone-900 text-sm block">{t.tableNumber}</strong>
+                  <span className="text-[11px] text-stone-500 block">{t.name}</span>
                   <button
                     onClick={() => openQrCodeModal(t)}
-                    className="w-full py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500 border border-amber-500/40 text-amber-400 hover:text-stone-950 font-bold text-xs flex items-center justify-center gap-1"
+                    className="w-full py-1.5 rounded-lg bg-amber-50 hover:bg-amber-600 border border-amber-200 text-amber-800 hover:text-white font-bold text-xs flex items-center justify-center gap-1 transition-all"
                   >
                     <QrCode className="w-3.5 h-3.5" /> View QR
                   </button>
@@ -1641,23 +1636,23 @@ export default function OwnerDashboardPage() {
 
       {/* ----------------- MODAL: WALK-IN CHECK-IN ----------------- */}
       {showWalkInModal && (
-        <div className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="glass-panel p-6 sm:p-8 rounded-3xl max-w-md w-full space-y-5 border border-amber-500/40 shadow-2xl">
+        <div className="fixed inset-0 z-50 bg-stone-950/40 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white p-6 sm:p-8 rounded-3xl max-w-md w-full space-y-5 border border-stone-200 shadow-2xl">
             <div className="flex items-center justify-between">
-              <h3 className="font-serif text-xl font-bold text-stone-100">Register Walk-in Guest</h3>
-              <button onClick={() => setShowWalkInModal(false)} className="text-stone-400 hover:text-white">
+              <h3 className="font-serif text-xl font-bold text-stone-900">Register Walk-in Guest</h3>
+              <button onClick={() => setShowWalkInModal(false)} className="text-stone-400 hover:text-stone-900">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleWalkInSubmit} className="space-y-4">
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-stone-300">Select Table *</label>
+                <label className="text-xs font-semibold text-stone-700">Select Table *</label>
                 <select
                   required
                   value={walkInTableId}
                   onChange={(e) => setWalkInTableId(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-stone-900 border border-stone-800 text-stone-100 text-xs"
+                  className="w-full px-3 py-2 rounded-xl bg-stone-50 border border-stone-200 text-stone-900 text-xs focus:outline-none focus:border-amber-500"
                 >
                   <option value="">-- Choose Free Table --</option>
                   {tables
@@ -1671,39 +1666,39 @@ export default function OwnerDashboardPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-stone-300">Guest Name / Party</label>
+                <label className="text-xs font-semibold text-stone-700">Guest Name / Party</label>
                 <input
                   type="text"
                   placeholder="e.g. Rahul Sharma"
                   value={walkInGuestName}
                   onChange={(e) => setWalkInGuestName(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-stone-900 border border-stone-800 text-stone-100 text-xs"
+                  className="w-full px-3 py-2 rounded-xl bg-stone-50 border border-stone-200 text-stone-900 text-xs focus:outline-none focus:border-amber-500"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-stone-300">Guest Count</label>
+                <label className="text-xs font-semibold text-stone-700">Guest Count</label>
                 <input
                   type="number"
                   min={1}
                   max={12}
                   value={walkInGuestCount}
                   onChange={(e) => setWalkInGuestCount(Number(e.target.value))}
-                  className="w-full px-3 py-2 rounded-xl bg-stone-900 border border-stone-800 text-stone-100 text-xs"
+                  className="w-full px-3 py-2 rounded-xl bg-stone-50 border border-stone-200 text-stone-900 text-xs focus:outline-none focus:border-amber-500"
                 />
               </div>
 
-              <div className="flex justify-end gap-2 pt-3 border-t border-stone-800">
+              <div className="flex justify-end gap-2 pt-3 border-t border-stone-100">
                 <button
                   type="button"
                   onClick={() => setShowWalkInModal(false)}
-                  className="px-4 py-2 rounded-xl bg-stone-900 text-stone-400 text-xs"
+                  className="px-4 py-2 rounded-xl bg-stone-100 text-stone-700 text-xs hover:bg-stone-200"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs"
+                  className="px-5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-md shadow-amber-600/20"
                 >
                   Check In & Generate Code
                 </button>
@@ -1715,22 +1710,22 @@ export default function OwnerDashboardPage() {
 
       {/* ----------------- MODAL: CONFIRM RESERVATION ----------------- */}
       {showConfirmResModal && selectedRes && (
-        <div className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="glass-panel p-6 sm:p-8 rounded-3xl max-w-lg w-full space-y-5 border border-emerald-500/40 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-stone-800 pb-3">
-              <h3 className="font-serif text-xl font-bold text-stone-100">
+        <div className="fixed inset-0 z-50 bg-stone-950/40 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white p-6 sm:p-8 rounded-3xl max-w-lg w-full space-y-5 border border-stone-200 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-stone-100 pb-3">
+              <h3 className="font-serif text-xl font-bold text-stone-900">
                 Accept Reservation {selectedRes.bookingReference}
               </h3>
-              <button onClick={() => setShowConfirmResModal(false)} className="text-stone-400 hover:text-white">
+              <button onClick={() => setShowConfirmResModal(false)} className="text-stone-400 hover:text-stone-900">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="space-y-2 text-xs text-stone-300">
-              <div>Guest: <strong>{selectedRes.guestName}</strong> ({selectedRes.guestCount} Guests)</div>
-              <div>Time: <strong>{format(new Date(selectedRes.startDateTime), "dd MMM, hh:mm a")}</strong></div>
+            <div className="space-y-2 text-xs text-stone-700">
+              <div>Guest: <strong className="text-stone-900">{selectedRes.guestName}</strong> ({selectedRes.guestCount} Guests)</div>
+              <div>Time: <strong className="text-stone-900">{format(new Date(selectedRes.startDateTime), "dd MMM, hh:mm a")}</strong></div>
               {selectedRes.specialRequest && (
-                <div className="p-3 rounded-xl bg-amber-950/40 border border-amber-900 text-amber-200 italic">
+                <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 italic">
                   Special Request: &quot;{selectedRes.specialRequest}&quot;
                 </div>
               )}
@@ -1738,11 +1733,11 @@ export default function OwnerDashboardPage() {
 
             <div className="space-y-3 pt-2">
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-stone-300">Assign / Reassign Table</label>
+                <label className="text-xs font-semibold text-stone-700">Assign / Reassign Table</label>
                 <select
                   value={assignTableId}
                   onChange={(e) => setAssignTableId(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-stone-900 border border-stone-800 text-stone-100 text-xs"
+                  className="w-full px-3 py-2 rounded-xl bg-stone-50 border border-stone-200 text-stone-900 text-xs focus:outline-none focus:border-amber-500"
                 >
                   {tables.map((t: any) => (
                     <option key={t.id} value={t.id}>
@@ -1753,29 +1748,29 @@ export default function OwnerDashboardPage() {
               </div>
 
               {selectedRes.specialRequest && (
-                <label className="flex items-center gap-2 text-xs text-stone-200 cursor-pointer pt-1">
+                <label className="flex items-center gap-2 text-xs text-stone-800 cursor-pointer pt-1">
                   <input
                     type="checkbox"
                     checked={approveSpecialReq}
                     onChange={(e) => setApproveSpecialReq(e.target.checked)}
-                    className="w-4 h-4 rounded text-amber-500"
+                    className="w-4 h-4 rounded text-amber-600"
                   />
                   <span>Explicitly accept and accommodate special seating/occasion request</span>
                 </label>
               )}
             </div>
 
-            <div className="flex justify-end gap-2 pt-3 border-t border-stone-800">
+            <div className="flex justify-end gap-2 pt-3 border-t border-stone-100">
               <button
                 type="button"
                 onClick={() => setShowConfirmResModal(false)}
-                className="px-4 py-2 rounded-xl bg-stone-900 text-stone-400 text-xs"
+                className="px-4 py-2 rounded-xl bg-stone-100 text-stone-700 text-xs hover:bg-stone-200"
               >
                 Cancel
               </button>
               <button
                 onClick={handleConfirmReservation}
-                className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs"
+                className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md shadow-emerald-600/20"
               >
                 Confirm Booking
               </button>
@@ -1786,34 +1781,34 @@ export default function OwnerDashboardPage() {
 
       {/* ----------------- MODAL: REJECT RESERVATION ----------------- */}
       {showRejectResModal && selectedRes && (
-        <div className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="glass-panel p-6 sm:p-8 rounded-3xl max-w-md w-full space-y-5 border border-red-500/40 shadow-2xl">
-            <h3 className="font-serif text-xl font-bold text-stone-100">
+        <div className="fixed inset-0 z-50 bg-stone-950/40 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white p-6 sm:p-8 rounded-3xl max-w-md w-full space-y-5 border border-stone-200 shadow-2xl">
+            <h3 className="font-serif text-xl font-bold text-stone-900">
               Reject Reservation {selectedRes.bookingReference}
             </h3>
 
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-stone-300">Reason for Rejection</label>
+              <label className="text-xs font-semibold text-stone-700">Reason for Rejection</label>
               <input
                 type="text"
                 placeholder="e.g. Fully booked / Private event scheduled"
                 value={rejectReason}
                 onChange={(e) => setRejectReason(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-stone-900 border border-stone-800 text-stone-100 text-xs"
+                className="w-full px-3 py-2 rounded-xl bg-stone-50 border border-stone-200 text-stone-900 text-xs focus:outline-none focus:border-amber-500"
               />
             </div>
 
-            <div className="flex justify-end gap-2 pt-3 border-t border-stone-800">
+            <div className="flex justify-end gap-2 pt-3 border-t border-stone-100">
               <button
                 type="button"
                 onClick={() => setShowRejectResModal(false)}
-                className="px-4 py-2 rounded-xl bg-stone-900 text-stone-400 text-xs"
+                className="px-4 py-2 rounded-xl bg-stone-100 text-stone-700 text-xs hover:bg-stone-200"
               >
                 Cancel
               </button>
               <button
                 onClick={handleRejectReservation}
-                className="px-5 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs"
+                className="px-5 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-md shadow-red-600/20"
               >
                 Reject Booking
               </button>
@@ -1824,47 +1819,47 @@ export default function OwnerDashboardPage() {
 
       {/* ----------------- MODAL: RECORD PAYMENT ----------------- */}
       {showPaymentModal && paymentBill && (
-        <div className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="glass-panel p-6 sm:p-8 rounded-3xl max-w-md w-full space-y-5 border border-amber-500/40 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-stone-800 pb-3">
-              <h3 className="font-serif text-xl font-bold text-stone-100">
+        <div className="fixed inset-0 z-50 bg-stone-950/40 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white p-6 sm:p-8 rounded-3xl max-w-md w-full space-y-5 border border-stone-200 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-stone-100 pb-3">
+              <h3 className="font-serif text-xl font-bold text-stone-900">
                 Record External Payment
               </h3>
-              <button onClick={() => setShowPaymentModal(false)} className="text-stone-400 hover:text-white">
+              <button onClick={() => setShowPaymentModal(false)} className="text-stone-400 hover:text-stone-900">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleRecordPayment} className="space-y-4">
-              <div className="p-3 rounded-2xl bg-stone-900 border border-stone-800 text-xs space-y-1">
+              <div className="p-3 rounded-2xl bg-stone-50 border border-stone-200 text-xs space-y-1">
                 <div className="flex justify-between">
-                  <span className="text-stone-400">Bill Number:</span>
-                  <strong className="text-amber-400 font-mono">{paymentBill.billNumber}</strong>
+                  <span className="text-stone-500">Bill Number:</span>
+                  <strong className="text-amber-800 font-mono">{paymentBill.billNumber}</strong>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-stone-400">Total Billed:</span>
-                  <strong className="text-stone-100 font-mono">₹{paymentBill.totalAmount.toFixed(2)}</strong>
+                  <span className="text-stone-500">Total Billed:</span>
+                  <strong className="text-stone-900 font-mono">₹{paymentBill.totalAmount.toFixed(2)}</strong>
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-stone-300">Payment Amount (₹) *</label>
+                <label className="text-xs font-semibold text-stone-700">Payment Amount (₹) *</label>
                 <input
                   type="number"
                   step="0.01"
                   required
                   value={paymentAmount}
                   onChange={(e) => setPaymentAmount(Number(e.target.value))}
-                  className="w-full px-3 py-2 rounded-xl bg-stone-900 border border-stone-800 text-stone-100 font-mono text-sm"
+                  className="w-full px-3 py-2 rounded-xl bg-stone-50 border border-stone-200 text-stone-900 font-mono text-sm focus:outline-none focus:border-amber-500"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-stone-300">Payment Method *</label>
+                <label className="text-xs font-semibold text-stone-700">Payment Method *</label>
                 <select
                   value={paymentMethod}
                   onChange={(e) => setPaymentMethod(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-stone-900 border border-stone-800 text-stone-100 text-xs"
+                  className="w-full px-3 py-2 rounded-xl bg-stone-50 border border-stone-200 text-stone-900 text-xs focus:outline-none focus:border-amber-500"
                 >
                   <option value="UPI_QR">UPI / QR Code Scan</option>
                   <option value="CASH">Cash Settlement</option>
@@ -1875,27 +1870,27 @@ export default function OwnerDashboardPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-stone-300">Reference Note (Optional)</label>
+                <label className="text-xs font-semibold text-stone-700">Reference Note (Optional)</label>
                 <input
                   type="text"
                   placeholder="e.g. UPI txn ref / Cash note"
                   value={paymentNote}
                   onChange={(e) => setPaymentNote(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-stone-900 border border-stone-800 text-stone-100 text-xs"
+                  className="w-full px-3 py-2 rounded-xl bg-stone-50 border border-stone-200 text-stone-900 text-xs focus:outline-none focus:border-amber-500"
                 />
               </div>
 
-              <div className="flex justify-end gap-2 pt-3 border-t border-stone-800">
+              <div className="flex justify-end gap-2 pt-3 border-t border-stone-100">
                 <button
                   type="button"
                   onClick={() => setShowPaymentModal(false)}
-                  className="px-4 py-2 rounded-xl bg-stone-900 text-stone-400 text-xs"
+                  className="px-4 py-2 rounded-xl bg-stone-100 text-stone-700 text-xs hover:bg-stone-200"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs"
+                  className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md shadow-emerald-600/20"
                 >
                   Confirm Payment Entry
                 </button>
@@ -1907,28 +1902,28 @@ export default function OwnerDashboardPage() {
 
       {/* ----------------- MODAL: CLOSE VISIT & CHECKOUT ----------------- */}
       {showCloseVisitModal && visitToClose && (
-        <div className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="glass-panel p-6 sm:p-8 rounded-3xl max-w-md w-full space-y-5 border border-stone-700 shadow-2xl">
-            <h3 className="font-serif text-xl font-bold text-stone-100">
+        <div className="fixed inset-0 z-50 bg-stone-950/40 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white p-6 sm:p-8 rounded-3xl max-w-md w-full space-y-5 border border-stone-200 shadow-2xl">
+            <h3 className="font-serif text-xl font-bold text-stone-900">
               Close Table Visit & Free Table
             </h3>
-            <p className="text-xs text-stone-400">
+            <p className="text-xs text-stone-600">
               This will conclude the active visit on Table{" "}
-              <strong>{visitToClose.table?.tableNumber}</strong>, invalidate the Visit Code (
+              <strong className="text-stone-900">{visitToClose.table?.tableNumber}</strong>, invalidate the Visit Code (
               {visitToClose.visitCode}), and mark the table clean and ready for new guests.
             </p>
 
-            <div className="flex justify-end gap-2 pt-3 border-t border-stone-800">
+            <div className="flex justify-end gap-2 pt-3 border-t border-stone-100">
               <button
                 type="button"
                 onClick={() => setShowCloseVisitModal(false)}
-                className="px-4 py-2 rounded-xl bg-stone-900 text-stone-400 text-xs"
+                className="px-4 py-2 rounded-xl bg-stone-100 text-stone-700 text-xs hover:bg-stone-200"
               >
                 Cancel
               </button>
               <button
                 onClick={handleCloseVisit}
-                className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs"
+                className="px-5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-md shadow-amber-600/20"
               >
                 Confirm Table Checkout
               </button>
@@ -1939,35 +1934,35 @@ export default function OwnerDashboardPage() {
 
       {/* ----------------- MODAL: VIEW TABLE QR CODE ----------------- */}
       {showQrModal && selectedQrTable && (
-        <div className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="glass-panel p-8 rounded-3xl max-w-sm w-full space-y-6 text-center border border-amber-500/40 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-stone-800 pb-3">
-              <strong className="text-stone-100 text-sm">
+        <div className="fixed inset-0 z-50 bg-stone-950/40 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white p-8 rounded-3xl max-w-sm w-full space-y-6 text-center border border-stone-200 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-stone-100 pb-3">
+              <strong className="text-stone-900 text-sm">
                 {selectedQrTable.tableNumber} - {selectedQrTable.name}
               </strong>
-              <button onClick={() => setShowQrModal(false)} className="text-stone-400 hover:text-white">
+              <button onClick={() => setShowQrModal(false)} className="text-stone-400 hover:text-stone-900">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {qrData?.qrDataUrl ? (
               <div className="space-y-3">
-                <div className="p-4 bg-white rounded-2xl inline-block shadow-xl">
+                <div className="p-4 bg-white rounded-2xl inline-block border border-stone-200 shadow-sm">
                   <img src={qrData.qrDataUrl} alt="Table QR Code" className="w-56 h-56 mx-auto" />
                 </div>
-                <div className="text-[11px] text-stone-400">
+                <div className="text-[11px] text-stone-500">
                   Scan to launch live table ordering for Table {selectedQrTable.tableNumber}
                 </div>
               </div>
             ) : (
-              <div className="py-12 text-center text-xs text-stone-500">Generating QR code...</div>
+              <div className="py-12 text-center text-xs text-stone-400">Generating QR code...</div>
             )}
 
             <div className="pt-2">
               <Link
                 href={`/table/${selectedQrTable.id}?visit=7492`}
                 target="_blank"
-                className="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs flex items-center justify-center gap-1.5"
+                className="w-full py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm"
               >
                 <UtensilsCrossed className="w-3.5 h-3.5" /> Open Table Portal Directly
               </Link>
@@ -1978,13 +1973,13 @@ export default function OwnerDashboardPage() {
 
       {/* ----------------- MODAL: ADD / EDIT MENU ITEM ----------------- */}
       {showMenuModal && (
-        <div className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="glass-panel p-6 sm:p-8 rounded-3xl max-w-lg w-full space-y-5 border border-amber-500/40 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-stone-800 pb-3">
-              <h3 className="font-serif text-xl font-bold text-stone-100">
+        <div className="fixed inset-0 z-50 bg-stone-950/40 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white p-6 sm:p-8 rounded-3xl max-w-lg w-full space-y-5 border border-stone-200 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-stone-100 pb-3">
+              <h3 className="font-serif text-xl font-bold text-stone-900">
                 {editMenuItem ? `Edit ${editMenuItem.name}` : "Add New Menu Item"}
               </h3>
-              <button onClick={() => setShowMenuModal(false)} className="text-stone-400 hover:text-white">
+              <button onClick={() => setShowMenuModal(false)} className="text-stone-400 hover:text-stone-900">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -1992,11 +1987,11 @@ export default function OwnerDashboardPage() {
             <form onSubmit={handleSaveMenuItem} className="space-y-4 text-xs">
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="font-semibold text-stone-300">Category *</label>
+                  <label className="font-semibold text-stone-700">Category *</label>
                   <select
                     value={menuCategoryId}
                     onChange={(e) => setMenuCategoryId(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-stone-900 border border-stone-800 text-stone-100"
+                    className="w-full px-3 py-2 rounded-xl bg-stone-50 border border-stone-200 text-stone-900 focus:outline-none focus:border-amber-500"
                   >
                     {menuCategories.map((c: any) => (
                       <option key={c.id} value={c.id}>
@@ -2007,45 +2002,45 @@ export default function OwnerDashboardPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-semibold text-stone-300">Price (₹) *</label>
+                  <label className="font-semibold text-stone-700">Price (₹) *</label>
                   <input
                     type="number"
                     required
                     value={menuPrice}
                     onChange={(e) => setMenuPrice(Number(e.target.value))}
-                    className="w-full px-3 py-2 rounded-xl bg-stone-900 border border-stone-800 text-stone-100 font-mono"
+                    className="w-full px-3 py-2 rounded-xl bg-stone-50 border border-stone-200 text-stone-900 font-mono focus:outline-none focus:border-amber-500"
                   />
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="font-semibold text-stone-300">Item Name *</label>
+                <label className="font-semibold text-stone-700">Item Name *</label>
                 <input
                   type="text"
                   required
                   value={menuName}
                   onChange={(e) => setMenuName(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-stone-900 border border-stone-800 text-stone-100"
+                  className="w-full px-3 py-2 rounded-xl bg-stone-50 border border-stone-200 text-stone-900 focus:outline-none focus:border-amber-500"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="font-semibold text-stone-300">Description</label>
+                <label className="font-semibold text-stone-700">Description</label>
                 <textarea
                   rows={2}
                   value={menuDesc}
                   onChange={(e) => setMenuDesc(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-stone-900 border border-stone-800 text-stone-100"
+                  className="w-full px-3 py-2 rounded-xl bg-stone-50 border border-stone-200 text-stone-900 focus:outline-none focus:border-amber-500"
                 />
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-stone-800">
                 <label className="flex items-center gap-1.5 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={menuIsVeg}
                     onChange={(e) => setMenuIsVeg(e.target.checked)}
-                    className="rounded text-amber-500"
+                    className="rounded text-amber-600"
                   />
                   <span>Vegetarian</span>
                 </label>
@@ -2054,7 +2049,7 @@ export default function OwnerDashboardPage() {
                     type="checkbox"
                     checked={menuIsVegan}
                     onChange={(e) => setMenuIsVegan(e.target.checked)}
-                    className="rounded text-amber-500"
+                    className="rounded text-amber-600"
                   />
                   <span>Vegan</span>
                 </label>
@@ -2063,7 +2058,7 @@ export default function OwnerDashboardPage() {
                     type="checkbox"
                     checked={menuIsGf}
                     onChange={(e) => setMenuIsGf(e.target.checked)}
-                    className="rounded text-amber-500"
+                    className="rounded text-amber-600"
                   />
                   <span>Gluten-Free</span>
                 </label>
@@ -2072,23 +2067,23 @@ export default function OwnerDashboardPage() {
                     type="checkbox"
                     checked={menuIsSpicy}
                     onChange={(e) => setMenuIsSpicy(e.target.checked)}
-                    className="rounded text-amber-500"
+                    className="rounded text-amber-600"
                   />
                   <span>Spicy</span>
                 </label>
               </div>
 
-              <div className="flex justify-end gap-2 pt-3 border-t border-stone-800">
+              <div className="flex justify-end gap-2 pt-3 border-t border-stone-100">
                 <button
                   type="button"
                   onClick={() => setShowMenuModal(false)}
-                  className="px-4 py-2 rounded-xl bg-stone-900 text-stone-400"
+                  className="px-4 py-2 rounded-xl bg-stone-100 text-stone-700 hover:bg-stone-200"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold"
+                  className="px-5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold shadow-md shadow-amber-600/20"
                 >
                   Save Item
                 </button>

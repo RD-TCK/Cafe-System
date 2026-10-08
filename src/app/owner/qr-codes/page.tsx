@@ -114,23 +114,23 @@ export default function OwnerQRCodesPage() {
       : tablesWithQR.filter((t) => t.section === selectedSection);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 bg-[#FAF7F2] min-h-screen text-stone-900">
       {/* Top Header Controls (Hidden on Print) */}
-      <div className="print:hidden flex flex-wrap items-center justify-between gap-4 glass-panel p-6 rounded-3xl border border-stone-800 shadow-xl">
+      <div className="print:hidden flex flex-wrap items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-stone-200/90 shadow-sm">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <Link
               href="/owner/dashboard"
-              className="text-stone-400 hover:text-white text-xs flex items-center gap-1 font-semibold"
+              className="text-stone-600 hover:text-stone-900 text-xs flex items-center gap-1 font-semibold"
             >
-              <ArrowLeft className="w-3.5 h-3.5" /> Back to Dashboard
+              <ArrowLeft className="w-3.5 h-3.5 text-amber-700" /> Back to Dashboard
             </Link>
           </div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-stone-100 flex items-center gap-2.5">
-            <QrCode className="w-7 h-7 text-amber-500" />
+          <h1 className="font-serif text-2xl sm:text-3xl font-extrabold text-stone-900 flex items-center gap-2.5">
+            <QrCode className="w-7 h-7 text-amber-600" />
             <span>Table QR Code & Stand Card Manager</span>
           </h1>
-          <p className="text-xs text-stone-400">
+          <p className="text-xs text-stone-500">
             Generate, preview, download, and print table tent cards for contactless customer ordering.
           </p>
         </div>
@@ -138,7 +138,7 @@ export default function OwnerQRCodesPage() {
         <div className="flex flex-wrap items-center gap-3">
           <button
             onClick={loadAllTableQRs}
-            className="p-3 rounded-2xl bg-stone-900 hover:bg-stone-800 border border-stone-800 text-stone-300 hover:text-white"
+            className="p-3 rounded-2xl bg-stone-100 hover:bg-stone-200 border border-stone-200 text-stone-700 hover:text-stone-900 transition-colors"
             title="Refresh QRs"
           >
             <RefreshCw className="w-4 h-4" />
@@ -146,7 +146,7 @@ export default function OwnerQRCodesPage() {
           <button
             onClick={handlePrint}
             disabled={loading || tablesWithQR.length === 0}
-            className="px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-bold text-sm shadow-xl shadow-amber-500/20 flex items-center gap-2 transition-all disabled:opacity-40"
+            className="px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-bold text-sm shadow-md shadow-amber-600/20 flex items-center gap-2 transition-all disabled:opacity-40"
           >
             <Printer className="w-4 h-4" />
             <span>Print All Table Stand Cards</span>
@@ -156,8 +156,8 @@ export default function OwnerQRCodesPage() {
 
       {/* Section Filter Pills (Hidden on Print) */}
       <div className="print:hidden flex items-center gap-2 overflow-x-auto pb-2">
-        <div className="text-xs font-semibold text-stone-400 flex items-center gap-1.5 mr-2">
-          <Layers className="w-4 h-4 text-amber-500" />
+        <div className="text-xs font-bold text-stone-700 flex items-center gap-1.5 mr-2">
+          <Layers className="w-4 h-4 text-amber-600" />
           <span>Floor Section:</span>
         </div>
         {sections.map((sec) => (
@@ -166,8 +166,8 @@ export default function OwnerQRCodesPage() {
             onClick={() => setSelectedSection(sec)}
             className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all ${
               selectedSection === sec
-                ? "bg-amber-500 text-stone-950 shadow-md shadow-amber-500/20"
-                : "bg-stone-900 text-stone-400 hover:text-white border border-stone-800"
+                ? "bg-amber-600 text-white shadow-sm"
+                : "bg-white text-stone-700 hover:bg-stone-100 border border-stone-200"
             }`}
           >
             {sec === "ALL" ? `All Tables (${tablesWithQR.length})` : sec}
@@ -177,11 +177,11 @@ export default function OwnerQRCodesPage() {
 
       {loading ? (
         <div className="py-24 text-center space-y-3 print:hidden">
-          <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-xs text-stone-400">Loading vector QR codes for floor tables...</p>
+          <div className="w-8 h-8 border-2 border-amber-600 border-t-transparent rounded-full animate-spin mx-auto" />
+          <p className="text-xs text-stone-500">Loading vector QR codes for floor tables...</p>
         </div>
       ) : filteredTables.length === 0 ? (
-        <div className="glass-panel p-12 text-center rounded-3xl text-stone-400 text-sm print:hidden">
+        <div className="bg-white p-12 text-center rounded-3xl text-stone-500 text-sm border border-stone-200 print:hidden">
           No active tables found for this section.
         </div>
       ) : (
@@ -190,12 +190,12 @@ export default function OwnerQRCodesPage() {
           {filteredTables.map((item) => (
             <div
               key={item.id}
-              className="bg-white text-stone-950 rounded-3xl p-6 sm:p-8 flex flex-col items-center justify-between text-center border-2 border-stone-200 shadow-xl print:shadow-none print:border-stone-400 print:break-inside-avoid print:p-6"
+              className="bg-white text-stone-950 rounded-3xl p-6 sm:p-8 flex flex-col items-center justify-between text-center border-2 border-stone-200 shadow-md print:shadow-none print:border-stone-400 print:break-inside-avoid print:p-6"
             >
               {/* Card Header Branding */}
               <div className="space-y-1 w-full pb-4 border-b border-stone-200">
                 <div className="flex items-center justify-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-stone-950 text-amber-500 flex items-center justify-center shadow">
+                  <div className="w-8 h-8 rounded-lg bg-stone-900 text-amber-400 flex items-center justify-center shadow">
                     <Coffee className="w-4 h-4" />
                   </div>
                   <span className="font-serif text-lg font-bold tracking-tight text-stone-900">
@@ -212,7 +212,7 @@ export default function OwnerQRCodesPage() {
                 <div className="text-[11px] font-bold uppercase tracking-widest text-stone-500">
                   Table Number
                 </div>
-                <div className="font-mono text-3xl sm:text-4xl font-extrabold text-stone-950 tracking-wider">
+                <div className="font-mono text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-wider">
                   {item.tableNumber}
                 </div>
                 <div className="text-xs font-semibold text-stone-700">

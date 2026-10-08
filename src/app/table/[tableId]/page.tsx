@@ -43,7 +43,7 @@ export default function TableOrderingPage({
   return (
     <Suspense
       fallback={
-        <div className="max-w-4xl mx-auto px-4 py-20 text-center text-stone-400 text-sm">
+        <div className="max-w-4xl mx-auto px-4 py-20 text-center text-stone-500 text-sm">
           Loading table session...
         </div>
       }
@@ -262,31 +262,31 @@ function TableOrderingContent({
     switch (status) {
       case "PENDING":
         return (
-          <span className="px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[11px] font-bold uppercase tracking-wider flex items-center gap-1">
-            <Clock className="w-3 h-3 animate-pulse" /> Pending Kitchen Acceptance
+          <span className="px-2.5 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200 text-[11px] font-bold uppercase tracking-wider flex items-center gap-1 shadow-sm">
+            <Clock className="w-3 h-3 animate-pulse text-amber-600" /> Pending Kitchen Acceptance
           </span>
         );
       case "ACCEPTED":
         return (
-          <span className="px-2.5 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/40 text-[11px] font-bold uppercase tracking-wider flex items-center gap-1">
-            <Check className="w-3 h-3" /> Accepted by Chef
+          <span className="px-2.5 py-1 rounded-full bg-blue-50 text-blue-800 border border-blue-200 text-[11px] font-bold uppercase tracking-wider flex items-center gap-1 shadow-sm">
+            <Check className="w-3 h-3 text-blue-600" /> Accepted by Chef
           </span>
         );
       case "PREPARING":
         return (
-          <span className="px-2.5 py-1 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/40 text-[11px] font-bold uppercase tracking-wider flex items-center gap-1">
-            <Flame className="w-3 h-3 animate-bounce" /> Preparing in Kitchen
+          <span className="px-2.5 py-1 rounded-full bg-purple-50 text-purple-800 border border-purple-200 text-[11px] font-bold uppercase tracking-wider flex items-center gap-1 shadow-sm">
+            <Flame className="w-3 h-3 animate-bounce text-purple-600" /> Preparing in Kitchen
           </span>
         );
       case "SERVED":
         return (
-          <span className="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[11px] font-bold uppercase tracking-wider flex items-center gap-1">
-            <CheckCircle2 className="w-3 h-3" /> Served at Table
+          <span className="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-[11px] font-bold uppercase tracking-wider flex items-center gap-1 shadow-sm">
+            <CheckCircle2 className="w-3 h-3 text-emerald-600" /> Served at Table
           </span>
         );
       case "CANCELLED":
         return (
-          <span className="px-2.5 py-1 rounded-full bg-red-950 text-red-400 border border-red-500/40 text-[11px] font-bold uppercase tracking-wider">
+          <span className="px-2.5 py-1 rounded-full bg-red-50 text-red-800 border border-red-200 text-[11px] font-bold uppercase tracking-wider shadow-sm">
             Cancelled
           </span>
         );
@@ -299,20 +299,20 @@ function TableOrderingContent({
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       {/* Connecting / Loading state or Error state */}
       {!isValidated ? (
-        <div className="glass-panel p-8 sm:p-12 rounded-3xl max-w-md mx-auto text-center space-y-6 border border-stone-800 shadow-2xl">
-          <div className="w-16 h-16 rounded-3xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center mx-auto">
+        <div className="bg-white p-8 sm:p-12 rounded-3xl max-w-md mx-auto text-center space-y-6 border border-stone-200 shadow-xl">
+          <div className="w-16 h-16 rounded-3xl bg-amber-50 border border-amber-200 text-amber-800 flex items-center justify-center mx-auto shadow-sm">
             {validating ? (
-              <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
+              <div className="w-8 h-8 border-2 border-amber-600 border-t-transparent rounded-full animate-spin" />
             ) : (
-              <QrCode className="w-8 h-8" />
+              <QrCode className="w-8 h-8 text-amber-700" />
             )}
           </div>
 
           <div className="space-y-2">
-            <h2 className="font-serif text-2xl font-bold text-stone-100">
+            <h2 className="font-serif text-2xl font-bold text-stone-900">
               {validating ? "Opening Table Menu..." : "Table Session Error"}
             </h2>
-            <p className="text-xs text-stone-400 leading-relaxed">
+            <p className="text-xs text-stone-600 leading-relaxed">
               {validating
                 ? "Connecting your phone to this table to unlock instant QR dining..."
                 : valError || "Unable to find or connect to this table."}
@@ -323,7 +323,7 @@ function TableOrderingContent({
             <div className="pt-2">
               <Link
                 href="/table"
-                className="w-full py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs inline-flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20"
+                className="w-full py-3 px-4 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs inline-flex items-center justify-center gap-2 shadow-lg shadow-amber-600/20"
               >
                 <Layers className="w-4 h-4" />
                 <span>Choose Your Table</span>
@@ -335,28 +335,28 @@ function TableOrderingContent({
         /* Validated Active Visit Portal */
         <div className="space-y-6">
           {/* Table & Visit Header Bar */}
-          <div className="glass-panel p-4 sm:p-6 rounded-3xl border border-stone-800 flex flex-wrap items-center justify-between gap-4">
+          <div className="bg-white p-4 sm:p-6 rounded-3xl border border-stone-200 shadow-sm flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center font-bold text-lg font-mono">
+              <div className="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-200 text-amber-800 flex items-center justify-center font-bold text-lg font-mono">
                 {visitData.table?.tableNumber || "T"}
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h2 className="font-serif text-lg sm:text-xl font-bold text-stone-100">
+                  <h2 className="font-serif text-lg sm:text-xl font-bold text-stone-900">
                     {visitData.table?.name || "Café Table"}
                   </h2>
-                  <span className="px-2 py-0.5 rounded-md bg-emerald-950 text-emerald-400 border border-emerald-500/40 text-[10px] font-bold uppercase">
+                  <span className="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-bold uppercase">
                     Live Active Visit
                   </span>
                 </div>
-                <div className="text-xs text-stone-400 flex flex-wrap items-center gap-2 sm:gap-3 mt-0.5">
-                  <span>Guest: <strong className="text-stone-200">{visitData.guestName || "Guest"}</strong></span>
+                <div className="text-xs text-stone-600 flex flex-wrap items-center gap-2 sm:gap-3 mt-0.5">
+                  <span>Guest: <strong className="text-stone-900">{visitData.guestName || "Guest"}</strong></span>
                   <span>•</span>
-                  <span>Visit Code: <strong className="text-amber-400 font-mono">{visitData.visitCode}</strong></span>
+                  <span>Visit Code: <strong className="text-amber-800 font-mono">{visitData.visitCode}</strong></span>
                   <span>•</span>
                   <Link
                     href="/table"
-                    className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 font-semibold underline underline-offset-2 hover:opacity-90"
+                    className="inline-flex items-center gap-1 text-amber-700 hover:text-amber-800 font-semibold underline underline-offset-2 hover:opacity-90"
                     title="Choose a different table"
                   >
                     <Layers className="w-3 h-3" />
@@ -367,13 +367,13 @@ function TableOrderingContent({
             </div>
 
             {/* View Switching Tabs */}
-            <div className="flex items-center gap-1 bg-stone-900/90 p-1.5 rounded-2xl border border-stone-800">
+            <div className="flex items-center gap-1 bg-stone-100 p-1.5 rounded-2xl border border-stone-200">
               <button
                 onClick={() => setActiveTab("MENU")}
                 className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 ${
                   activeTab === "MENU"
-                    ? "bg-amber-500 text-stone-950 shadow-md shadow-amber-500/20"
-                    : "text-stone-400 hover:text-stone-200"
+                    ? "bg-amber-600 text-white shadow-md shadow-amber-600/20 font-bold"
+                    : "text-stone-600 hover:text-stone-900"
                 }`}
               >
                 <UtensilsCrossed className="w-3.5 h-3.5" /> Order Menu
@@ -382,8 +382,8 @@ function TableOrderingContent({
                 onClick={() => setActiveTab("ORDERS")}
                 className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 ${
                   activeTab === "ORDERS"
-                    ? "bg-amber-500 text-stone-950 shadow-md shadow-amber-500/20"
-                    : "text-stone-400 hover:text-stone-200"
+                    ? "bg-amber-600 text-white shadow-md shadow-amber-600/20 font-bold"
+                    : "text-stone-600 hover:text-stone-900"
                 }`}
               >
                 <Clock className="w-3.5 h-3.5" />
@@ -393,8 +393,8 @@ function TableOrderingContent({
                 onClick={() => setActiveTab("BILL")}
                 className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 ${
                   activeTab === "BILL"
-                    ? "bg-amber-500 text-stone-950 shadow-md shadow-amber-500/20"
-                    : "text-stone-400 hover:text-stone-200"
+                    ? "bg-amber-600 text-white shadow-md shadow-amber-600/20 font-bold"
+                    : "text-stone-600 hover:text-stone-900"
                 }`}
               >
                 <Receipt className="w-3.5 h-3.5" /> Running Bill
@@ -403,20 +403,20 @@ function TableOrderingContent({
           </div>
 
           {orderSuccess && (
-            <div className="p-4 rounded-2xl bg-emerald-950/80 border border-emerald-500/50 text-emerald-200 text-xs flex items-center justify-between">
+            <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs flex items-center justify-between shadow-sm">
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                 <span>{orderSuccess}</span>
               </div>
-              <button onClick={() => setOrderSuccess("")} className="text-emerald-400 hover:text-white">
+              <button onClick={() => setOrderSuccess("")} className="text-emerald-700 hover:text-emerald-950">
                 <X className="w-4 h-4" />
               </button>
             </div>
           )}
 
           {orderError && (
-            <div className="p-4 rounded-2xl bg-red-950/80 border border-red-500/50 text-red-200 text-xs flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 text-red-400" />
+            <div className="p-4 rounded-2xl bg-red-50 border border-red-200 text-red-900 text-xs flex items-center gap-2 shadow-sm">
+              <AlertCircle className="w-4 h-4 text-red-600" />
               <span>{orderError}</span>
             </div>
           )}
@@ -430,8 +430,8 @@ function TableOrderingContent({
                   onClick={() => setSelectedCat("ALL")}
                   className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
                     selectedCat === "ALL"
-                      ? "bg-amber-500 text-stone-950"
-                      : "bg-stone-900 text-stone-400 hover:text-stone-200 border border-stone-800"
+                      ? "bg-amber-600 text-white font-bold shadow-sm"
+                      : "bg-white text-stone-700 hover:text-stone-900 border border-stone-200 shadow-sm"
                   }`}
                 >
                   All Items
@@ -442,8 +442,8 @@ function TableOrderingContent({
                     onClick={() => setSelectedCat(cat.id)}
                     className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
                       selectedCat === cat.id
-                        ? "bg-amber-500 text-stone-950"
-                        : "bg-stone-900 text-stone-400 hover:text-stone-200 border border-stone-800"
+                        ? "bg-amber-600 text-white font-bold shadow-sm"
+                        : "bg-white text-stone-700 hover:text-stone-900 border border-stone-200 shadow-sm"
                     }`}
                   >
                     {cat.name}
@@ -461,26 +461,26 @@ function TableOrderingContent({
                     return (
                       <div
                         key={item.id}
-                        className={`glass-panel p-4 rounded-2xl border border-stone-800 flex gap-4 justify-between items-center ${
-                          !item.isAvailable ? "opacity-50" : ""
+                        className={`bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex gap-4 justify-between items-center transition-all ${
+                          !item.isAvailable ? "opacity-50" : "hover:border-amber-300"
                         }`}
                       >
                         <div className="space-y-1 max-w-[65%]">
                           <div className="flex items-center gap-1.5">
-                            <span className="font-bold text-stone-100 text-sm">
+                            <span className="font-bold text-stone-900 text-sm">
                               {item.name}
                             </span>
                             {item.isVegetarian && (
-                              <Leaf className="w-3 h-3 text-emerald-400 shrink-0" />
+                              <Leaf className="w-3 h-3 text-emerald-600 shrink-0" />
                             )}
                             {item.isSpicy && (
-                              <Flame className="w-3 h-3 text-red-400 shrink-0" />
+                              <Flame className="w-3 h-3 text-red-600 shrink-0" />
                             )}
                           </div>
-                          <p className="text-xs text-stone-400 line-clamp-2">
+                          <p className="text-xs text-stone-600 line-clamp-2">
                             {item.description}
                           </p>
-                          <div className="font-serif text-sm font-bold text-amber-400 pt-1">
+                          <div className="font-serif text-sm font-bold text-amber-800 pt-1">
                             ₹{item.price.toFixed(0)}
                           </div>
                         </div>
@@ -488,23 +488,23 @@ function TableOrderingContent({
                         {/* Add to Cart Actions */}
                         <div className="shrink-0">
                           {!item.isAvailable ? (
-                            <span className="text-[10px] text-red-400 font-semibold uppercase">
+                            <span className="text-[10px] text-red-600 font-semibold uppercase">
                               Sold Out
                             </span>
                           ) : cartItem ? (
-                            <div className="flex items-center gap-2 bg-amber-500/10 border border-amber-500/40 rounded-xl p-1">
+                            <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-xl p-1">
                               <button
                                 onClick={() => updateQuantity(item.id, -1)}
-                                className="w-7 h-7 rounded-lg bg-stone-900 hover:bg-stone-800 text-amber-400 flex items-center justify-center text-xs font-bold"
+                                className="w-7 h-7 rounded-lg bg-white hover:bg-stone-100 text-amber-800 flex items-center justify-center text-xs font-bold border border-stone-200 shadow-xs"
                               >
                                 <Minus className="w-3.5 h-3.5" />
                               </button>
-                              <span className="text-xs font-bold text-amber-300 px-1">
+                              <span className="text-xs font-bold text-amber-900 px-1">
                                 {cartItem.quantity}
                               </span>
                               <button
                                 onClick={() => updateQuantity(item.id, 1)}
-                                className="w-7 h-7 rounded-lg bg-stone-900 hover:bg-stone-800 text-amber-400 flex items-center justify-center text-xs font-bold"
+                                className="w-7 h-7 rounded-lg bg-white hover:bg-stone-100 text-amber-800 flex items-center justify-center text-xs font-bold border border-stone-200 shadow-xs"
                               >
                                 <Plus className="w-3.5 h-3.5" />
                               </button>
@@ -512,7 +512,7 @@ function TableOrderingContent({
                           ) : (
                             <button
                               onClick={() => addToCart(item)}
-                              className="px-3.5 py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500 border border-amber-500/40 text-amber-400 hover:text-stone-950 font-bold text-xs transition-all flex items-center gap-1"
+                              className="px-3.5 py-2 rounded-xl bg-amber-50 hover:bg-amber-600 border border-amber-200 text-amber-800 hover:text-white font-bold text-xs transition-all flex items-center gap-1 shadow-sm"
                             >
                               <Plus className="w-3.5 h-3.5" /> Add
                             </button>
@@ -525,18 +525,18 @@ function TableOrderingContent({
 
               {/* Floating Bottom Cart Bar */}
               {cart.length > 0 && (
-                <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 max-w-md w-[92%] glass-panel-glow p-4 rounded-2xl border border-amber-500/50 flex items-center justify-between shadow-2xl">
+                <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 max-w-md w-[92%] bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-amber-300 flex items-center justify-between shadow-2xl">
                   <div className="space-y-0.5">
-                    <span className="text-xs text-stone-400">
+                    <span className="text-xs text-stone-600 font-medium">
                       {cart.reduce((s, i) => s + i.quantity, 0)} Items Selected
                     </span>
-                    <div className="font-serif text-lg font-bold text-amber-400">
+                    <div className="font-serif text-lg font-bold text-amber-800">
                       ₹{cartTotal.toFixed(0)}
                     </div>
                   </div>
                   <button
                     onClick={() => setShowCartDrawer(true)}
-                    className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs shadow-lg shadow-amber-500/25 flex items-center gap-2"
+                    className="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-lg shadow-amber-600/25 flex items-center gap-2"
                   >
                     <ShoppingBag className="w-4 h-4" /> Review & Send Order
                   </button>
@@ -549,24 +549,24 @@ function TableOrderingContent({
           {activeTab === "ORDERS" && (
             <div className="space-y-6">
               <div className="flex items-center justify-between">
-                <h3 className="font-serif text-lg font-bold text-stone-100 flex items-center gap-2">
-                  <Clock className="w-5 h-5 text-amber-500" />
+                <h3 className="font-serif text-lg font-bold text-stone-900 flex items-center gap-2">
+                  <Clock className="w-5 h-5 text-amber-600" />
                   Your Table Orders Stream
                 </h3>
-                <span className="text-xs text-stone-400 flex items-center gap-1">
+                <span className="text-xs text-stone-600 flex items-center gap-1">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                   Live kitchen sync
                 </span>
               </div>
 
               {(!visitData.orders || visitData.orders.length === 0) ? (
-                <div className="glass-panel p-12 rounded-3xl text-center space-y-3 border border-stone-800">
-                  <ShoppingBag className="w-10 h-10 text-stone-600 mx-auto" />
-                  <h4 className="font-bold text-stone-200">No orders placed yet</h4>
-                  <p className="text-xs text-stone-400">Switch to the menu tab to order food and drinks!</p>
+                <div className="bg-white p-12 rounded-3xl text-center space-y-3 border border-stone-200 shadow-sm">
+                  <ShoppingBag className="w-10 h-10 text-stone-400 mx-auto" />
+                  <h4 className="font-bold text-stone-900">No orders placed yet</h4>
+                  <p className="text-xs text-stone-600">Switch to the menu tab to order food and drinks!</p>
                   <button
                     onClick={() => setActiveTab("MENU")}
-                    className="px-4 py-2 rounded-xl bg-amber-500 text-stone-950 font-bold text-xs"
+                    className="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-sm"
                   >
                     Browse Menu
                   </button>
@@ -576,11 +576,11 @@ function TableOrderingContent({
                   {visitData.orders.map((ord: any) => (
                     <div
                       key={ord.id}
-                      className="glass-panel p-5 rounded-2xl border border-stone-800 space-y-4"
+                      className="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm space-y-4"
                     >
-                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-stone-800 pb-3">
+                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-stone-100 pb-3">
                         <div>
-                          <span className="text-xs font-bold text-amber-400 font-mono">
+                          <span className="text-xs font-bold text-amber-800 font-mono">
                             {ord.orderNumber} (Round {ord.round})
                           </span>
                           <span className="text-stone-500 text-[11px] block">
@@ -600,16 +600,16 @@ function TableOrderingContent({
                             }`}
                           >
                             <div>
-                              <strong className="text-stone-200">
+                              <strong className="text-stone-900">
                                 {it.quantity}x {it.itemNameSnapshot}
                               </strong>
                               {it.customInstructions && (
-                                <span className="text-[11px] text-amber-300 block italic">
+                                <span className="text-[11px] text-amber-700 block italic">
                                   Note: {it.customInstructions}
                                 </span>
                               )}
                             </div>
-                            <span className="font-serif font-bold text-amber-400">
+                            <span className="font-serif font-bold text-amber-800">
                               ₹{it.subtotalSnapshot.toFixed(0)}
                             </span>
                           </div>
@@ -617,7 +617,7 @@ function TableOrderingContent({
                       </div>
 
                       {ord.notes && (
-                        <div className="pt-2 text-[11px] text-stone-400 italic bg-stone-900/60 p-2.5 rounded-xl border border-stone-800">
+                        <div className="pt-2 text-[11px] text-stone-600 italic bg-stone-50 p-2.5 rounded-xl border border-stone-200">
                           Table Instructions: {ord.notes}
                         </div>
                       )}
@@ -630,11 +630,11 @@ function TableOrderingContent({
 
           {/* TAB 3: RUNNING BILL */}
           {activeTab === "BILL" && (
-            <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-stone-800 space-y-6">
-              <div className="flex items-center justify-between border-b border-stone-800 pb-4">
+            <div className="bg-white p-6 sm:p-8 rounded-3xl border border-stone-200 shadow-sm space-y-6">
+              <div className="flex items-center justify-between border-b border-stone-100 pb-4">
                 <div className="space-y-0.5">
-                  <div className="text-xs text-stone-400">Table Bill Receipt</div>
-                  <h3 className="font-mono text-lg font-bold text-amber-400">
+                  <div className="text-xs text-stone-500">Table Bill Receipt</div>
+                  <h3 className="font-mono text-lg font-bold text-amber-800">
                     {visitData.bill?.billNumber || "BILL-IN-PROGRESS"}
                   </h3>
                 </div>
@@ -642,10 +642,10 @@ function TableOrderingContent({
                   <span
                     className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
                       visitData.bill?.status === "PAID"
-                        ? "bg-emerald-950 text-emerald-400 border border-emerald-500/50"
+                        ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
                         : visitData.bill?.status === "PARTIALLY_PAID"
-                        ? "bg-amber-950 text-amber-400 border border-amber-500/50"
-                        : "bg-stone-800 text-stone-300"
+                        ? "bg-amber-50 text-amber-800 border border-amber-200"
+                        : "bg-stone-100 text-stone-700 border border-stone-200"
                     }`}
                   >
                     {visitData.bill?.status || "UNPAID"}
@@ -655,11 +655,11 @@ function TableOrderingContent({
 
               {/* Itemized active items */}
               <div className="space-y-3">
-                <h4 className="text-xs font-bold text-stone-400 uppercase tracking-wider">
+                <h4 className="text-xs font-bold text-stone-500 uppercase tracking-wider">
                   Consolidated Ordered Items (Snapshot Pricing)
                 </h4>
                 {visitData.orders?.flatMap((o: any) => o.items).filter((i: any) => i.status !== "CANCELLED").length === 0 ? (
-                  <div className="text-xs text-stone-500 py-4 text-center">No active items on bill yet.</div>
+                  <div className="text-xs text-stone-400 py-4 text-center">No active items on bill yet.</div>
                 ) : (
                   <div className="space-y-2 text-xs">
                     {visitData.orders
@@ -668,12 +668,12 @@ function TableOrderingContent({
                       .map((item: any) => (
                         <div
                           key={item.id}
-                          className="flex items-center justify-between py-1 border-b border-stone-900"
+                          className="flex items-center justify-between py-1 border-b border-stone-100"
                         >
-                          <span className="text-stone-300">
+                          <span className="text-stone-800">
                             {item.quantity}x {item.itemNameSnapshot} (@ ₹{item.unitPriceSnapshot.toFixed(0)})
                           </span>
-                          <span className="font-mono font-bold text-stone-100">
+                          <span className="font-mono font-bold text-stone-900">
                             ₹{item.subtotalSnapshot.toFixed(2)}
                           </span>
                         </div>
@@ -684,20 +684,20 @@ function TableOrderingContent({
 
               {/* Bill Totals breakdown */}
               {visitData.bill && (
-                <div className="space-y-2 pt-4 border-t border-stone-800 text-xs">
-                  <div className="flex justify-between text-stone-400">
+                <div className="space-y-2 pt-4 border-t border-stone-100 text-xs">
+                  <div className="flex justify-between text-stone-600">
                     <span>Items Subtotal:</span>
-                    <span className="font-mono">₹{visitData.bill.subtotal.toFixed(2)}</span>
+                    <span className="font-mono text-stone-900">₹{visitData.bill.subtotal.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between text-stone-400">
+                  <div className="flex justify-between text-stone-600">
                     <span>GST ({visitData.bill.taxRatePercent}%):</span>
-                    <span className="font-mono">₹{visitData.bill.taxAmount.toFixed(2)}</span>
+                    <span className="font-mono text-stone-900">₹{visitData.bill.taxAmount.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between text-stone-400">
+                  <div className="flex justify-between text-stone-600">
                     <span>Service Charge ({visitData.bill.serviceChargePercent}%):</span>
-                    <span className="font-mono">₹{visitData.bill.serviceCharge.toFixed(2)}</span>
+                    <span className="font-mono text-stone-900">₹{visitData.bill.serviceCharge.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between text-base font-bold text-amber-400 pt-2 border-t border-stone-800">
+                  <div className="flex justify-between text-base font-bold text-amber-800 pt-2 border-t border-stone-200">
                     <span>Total Amount:</span>
                     <span className="font-mono">₹{visitData.bill.totalAmount.toFixed(2)}</span>
                   </div>
@@ -706,21 +706,21 @@ function TableOrderingContent({
 
               {/* Payments breakdown */}
               {visitData.bill?.payments && visitData.bill.payments.length > 0 && (
-                <div className="p-4 rounded-2xl bg-stone-900 border border-stone-800 space-y-2 text-xs">
-                  <div className="font-bold text-stone-300">Recorded External Payments:</div>
+                <div className="p-4 rounded-2xl bg-stone-50 border border-stone-200 space-y-2 text-xs">
+                  <div className="font-bold text-stone-800">Recorded External Payments:</div>
                   {visitData.bill.payments.map((p: any) => (
-                    <div key={p.id} className="flex justify-between text-stone-400">
+                    <div key={p.id} className="flex justify-between text-stone-600">
                       <span>
                         {p.paymentMethod} • {format(new Date(p.paidAt), "hh:mm a")}
                       </span>
-                      <strong className="text-emerald-400 font-mono">+₹{p.amount.toFixed(2)}</strong>
+                      <strong className="text-emerald-700 font-mono">+₹{p.amount.toFixed(2)}</strong>
                     </div>
                   ))}
                 </div>
               )}
 
-              <div className="p-4 rounded-2xl bg-amber-950/40 border border-amber-500/30 text-xs text-amber-200/90 flex items-start gap-2">
-                <CreditCard className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+              <div className="p-4 rounded-2xl bg-amber-50/70 border border-amber-200 text-xs text-amber-900 flex items-start gap-2">
+                <CreditCard className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
                 <span>
                   Payments are recorded by café staff (UPI QR, Credit/Debit Card, or Cash). Request the final bill with your server when ready to settle.
                 </span>
@@ -732,16 +732,16 @@ function TableOrderingContent({
 
       {/* Cart Review Drawer / Modal */}
       {showCartDrawer && (
-        <div className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="glass-panel p-6 sm:p-8 rounded-3xl max-w-lg w-full space-y-6 border border-amber-500/40 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-stone-800 pb-4">
-              <div className="flex items-center gap-2 font-serif text-xl font-bold text-stone-100">
-                <ShoppingBag className="w-5 h-5 text-amber-500" />
+        <div className="fixed inset-0 z-50 bg-stone-950/40 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white p-6 sm:p-8 rounded-3xl max-w-lg w-full space-y-6 border border-stone-200 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-stone-100 pb-4">
+              <div className="flex items-center gap-2 font-serif text-xl font-bold text-stone-900">
+                <ShoppingBag className="w-5 h-5 text-amber-600" />
                 Review Round Order
               </div>
               <button
                 onClick={() => setShowCartDrawer(false)}
-                className="p-2 rounded-xl hover:bg-stone-800 text-stone-400 hover:text-white"
+                className="p-2 rounded-xl hover:bg-stone-100 text-stone-500 hover:text-stone-900"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -751,11 +751,11 @@ function TableOrderingContent({
               {cart.map((item) => (
                 <div
                   key={item.menuItemId}
-                  className="p-3.5 rounded-2xl bg-stone-900 border border-stone-800 space-y-2 text-xs"
+                  className="p-3.5 rounded-2xl bg-stone-50 border border-stone-200 space-y-2 text-xs"
                 >
                   <div className="flex items-center justify-between">
-                    <strong className="text-stone-100 text-sm">{item.name}</strong>
-                    <span className="font-mono font-bold text-amber-400">
+                    <strong className="text-stone-900 text-sm">{item.name}</strong>
+                    <span className="font-mono font-bold text-amber-800">
                       ₹{(item.price * item.quantity).toFixed(0)}
                     </span>
                   </div>
@@ -766,20 +766,20 @@ function TableOrderingContent({
                       placeholder="Special instructions (e.g. less ice, extra hot)"
                       value={item.customInstructions || ""}
                       onChange={(e) => updateInstruction(item.menuItemId, e.target.value)}
-                      className="w-full px-3 py-1.5 rounded-lg bg-stone-950 border border-stone-800 text-stone-200 text-xs focus:outline-none focus:border-amber-500"
+                      className="w-full px-3 py-1.5 rounded-lg bg-white border border-stone-200 text-stone-900 text-xs focus:outline-none focus:border-amber-500"
                     />
 
                     <div className="flex items-center gap-1.5 shrink-0">
                       <button
                         onClick={() => updateQuantity(item.menuItemId, -1)}
-                        className="w-6 h-6 rounded bg-stone-800 hover:bg-stone-700 text-stone-200 flex items-center justify-center"
+                        className="w-6 h-6 rounded bg-white hover:bg-stone-100 text-stone-700 border border-stone-200 flex items-center justify-center"
                       >
                         <Minus className="w-3 h-3" />
                       </button>
-                      <span className="font-bold text-stone-200 px-1">{item.quantity}</span>
+                      <span className="font-bold text-stone-900 px-1">{item.quantity}</span>
                       <button
                         onClick={() => updateQuantity(item.menuItemId, 1)}
-                        className="w-6 h-6 rounded bg-stone-800 hover:bg-stone-700 text-stone-200 flex items-center justify-center"
+                        className="w-6 h-6 rounded bg-white hover:bg-stone-100 text-stone-700 border border-stone-200 flex items-center justify-center"
                       >
                         <Plus className="w-3 h-3" />
                       </button>
@@ -790,20 +790,20 @@ function TableOrderingContent({
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-semibold text-stone-300">Kitchen / Server Notes (Optional)</label>
+              <label className="text-xs font-semibold text-stone-700">Kitchen / Server Notes (Optional)</label>
               <input
                 type="text"
                 placeholder="e.g. Please bring drinks first"
                 value={orderNotes}
                 onChange={(e) => setOrderNotes(e.target.value)}
-                className="w-full px-3.5 py-2 rounded-xl bg-stone-900 border border-stone-800 text-stone-100 text-xs"
+                className="w-full px-3.5 py-2 rounded-xl bg-stone-50 border border-stone-200 text-stone-900 text-xs focus:outline-none focus:border-amber-500"
               />
             </div>
 
-            <div className="border-t border-stone-800 pt-4 flex items-center justify-between">
+            <div className="border-t border-stone-100 pt-4 flex items-center justify-between">
               <div>
-                <span className="text-xs text-stone-400">Round Subtotal</span>
-                <div className="font-serif text-xl font-bold text-amber-400">
+                <span className="text-xs text-stone-500">Round Subtotal</span>
+                <div className="font-serif text-xl font-bold text-amber-800">
                   ₹{cartTotal.toFixed(0)}
                 </div>
               </div>
@@ -811,7 +811,7 @@ function TableOrderingContent({
               <button
                 onClick={handlePlaceOrder}
                 disabled={placingOrder || cart.length === 0}
-                className="px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 disabled:opacity-50 text-stone-950 font-bold text-xs shadow-xl shadow-amber-500/20 flex items-center gap-2"
+                className="px-6 py-3 rounded-2xl bg-amber-600 hover:bg-amber-700 disabled:opacity-50 text-white font-bold text-xs shadow-xl shadow-amber-600/20 flex items-center gap-2"
               >
                 {placingOrder ? "Placing Order..." : "Send Order to Kitchen"}
               </button>
