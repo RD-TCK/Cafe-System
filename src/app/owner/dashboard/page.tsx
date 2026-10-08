@@ -501,13 +501,20 @@ export default function OwnerDashboardPage() {
           </div>
         </div>
 
-        {/* Quick Actions & Logout */}
-        <div className="flex items-center gap-2 shrink-0">
+        {/* Quick Actions & Navigation */}
+        <div className="flex flex-wrap items-center gap-2 shrink-0">
+          <Link
+            href="/"
+            target="_blank"
+            className="px-3.5 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 border border-stone-700 text-stone-300 hover:text-white font-medium text-xs flex items-center gap-1.5 transition-colors"
+          >
+            <span>🌐 View Customer Website</span>
+          </Link>
           <button
             onClick={() => setShowWalkInModal(true)}
-            className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs shadow-md shadow-amber-500/20 flex items-center gap-1.5"
+            className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs shadow-md shadow-amber-500/20 flex items-center gap-1.5 transition-all"
           >
-            <Plus className="w-4 h-4" /> Register Walk-In
+            <Plus className="w-4 h-4" /> Quick Walk-In
           </button>
           <button
             onClick={fetchAllData}
@@ -518,7 +525,7 @@ export default function OwnerDashboardPage() {
           </button>
           <button
             onClick={handleLogout}
-            className="px-3 py-2 rounded-xl bg-red-950/60 hover:bg-red-900 border border-red-500/40 text-red-300 text-xs font-semibold flex items-center gap-1.5"
+            className="px-3 py-2 rounded-xl bg-red-950/60 hover:bg-red-900 border border-red-500/40 text-red-300 text-xs font-semibold flex items-center gap-1.5 transition-colors"
           >
             <LogOut className="w-4 h-4" /> Logout
           </button>
@@ -565,6 +572,13 @@ export default function OwnerDashboardPage() {
             </button>
           );
         })}
+        <Link
+          href="/owner/qr-codes"
+          className="px-4 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap bg-stone-900 hover:bg-stone-800 text-amber-400 hover:text-amber-300 border border-stone-800 flex items-center gap-2 shrink-0 transition-colors"
+        >
+          <QrCode className="w-4 h-4 text-amber-500" />
+          <span>Print Table QR Cards &rarr;</span>
+        </Link>
       </div>
 
       {/* Toast Alerts */}
