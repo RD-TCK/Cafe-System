@@ -312,7 +312,18 @@ export async function recordPayment(input: RecordPaymentInput) {
 /**
  * Close visit and table checkout
  */
-export async function closeVisit(visitId: string) {
+export async function closeVisit(
+  visitId: string,
+  options?: {
+    autoSettle?: boolean;
+    paymentMethod?: string;
+    referenceNote?: string;
+  }
+) {
+  const autoSettle = options?.autoSettle !== false; // default true (understand settled)
+  const paymentMethod = options?.paymentMethod || "CASH";
+  const referenceNote = options?.referenceNote || "Settled upon table close checkout";
+
   return await prisma.$transaction(async (tx) => {
     const visit = await tx.visit.findUnique({
       where: { id: visitId },
@@ -323,18 +334,43 @@ export async function closeVisit(visitId: string) {
       throw new Error("Visit not found");
     }
 
-    // Check if bill exists and is paid
-    if (visit.bill && visit.bill.status !== "PAID" && visit.bill.totalAmount > 0) {
+    // Check if bill exists and calculate balance
+    if (visit.bill && visit.bill.totalAmount > 0) {
       const paid = visit.bill.payments.reduce(
         (sum, p) => sum + (p.status === "COMPLETED" ? p.amount : 0),
         0
       );
-      if (paid < visit.bill.totalAmount) {
-        throw new Error(
-          `Cannot close visit with unpaid balance of ₹${(
-            visit.bill.totalAmount - paid
-          ).toFixed(2)}. Please record payment first.`
-        );
+      const remaining = Math.max(0, visit.bill.totalAmount - paid);
+
+      if (remaining > 0.01) {
+        if (autoSettle) {
+          // Auto record settling payment and mark bill PAID
+          await tx.payment.create({
+            data: {
+              billId: visit.bill.id,
+              amount: remaining,
+              paymentMethod,
+              status: "COMPLETED",
+              referenceNote,
+            },
+          });
+
+          await tx.bill.update({
+            where: { id: visit.bill.id },
+            data: { status: "PAID" },
+          });
+        } else {
+          throw new Error(
+            `Cannot close visit with unpaid balance of ₹${remaining.toFixed(
+              2
+            )}. Please confirm settlement first.`
+          );
+        }
+      } else if (visit.bill.status !== "PAID") {
+        await tx.bill.update({
+          where: { id: visit.bill.id },
+          data: { status: "PAID" },
+        });
       }
     }
 
@@ -356,3 +392,4 @@ export async function closeVisit(visitId: string) {
     return closed;
   });
 }
+

@@ -80,9 +80,18 @@ export default function OwnerDashboardPage() {
   const [paymentMethod, setPaymentMethod] = useState("UPI_QR");
   const [paymentNote, setPaymentNote] = useState("");
 
-  // Close Visit modal
+  // Close Visit modal & Settlement confirmation
   const [showCloseVisitModal, setShowCloseVisitModal] = useState(false);
   const [visitToClose, setVisitToClose] = useState<any>(null);
+  const [closeVisitConfirmPaid, setCloseVisitConfirmPaid] = useState(true);
+  const [closeVisitPaymentMethod, setCloseVisitPaymentMethod] = useState("CASH");
+
+  // Closures states
+  const [showAddClosureModal, setShowAddClosureModal] = useState(false);
+  const [closureTitle, setClosureTitle] = useState("");
+  const [closureStartDate, setClosureStartDate] = useState("");
+  const [closureEndDate, setClosureEndDate] = useState("");
+  const [closureReason, setClosureReason] = useState("");
 
   // Table QR modal
   const [showQrModal, setShowQrModal] = useState(false);
@@ -332,20 +341,71 @@ export default function OwnerDashboardPage() {
     }
   };
 
-  // Close Visit & Free Table Submit
+  // Close Visit & Free Table Submit (with auto-settlement support)
   const handleCloseVisit = async () => {
     if (!visitToClose) return;
     try {
       const res = await fetch(`/api/owner/visits/${visitToClose.id}/close`, {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          autoSettle: closeVisitConfirmPaid,
+          paymentMethod: closeVisitPaymentMethod,
+          referenceNote: `Settled via ${closeVisitPaymentMethod} upon table close checkout`,
+        }),
       });
       const data = await res.json();
       if (!res.ok || !data.success) throw new Error(data.error);
-      setSuccessMsg("Table visit concluded and table marked clean & free!");
+      setSuccessMsg(`Table ${visitToClose.table?.tableNumber || ""} checked out and marked clean & free!`);
       setShowCloseVisitModal(false);
       fetchAllData();
     } catch (err: any) {
       setErrorMsg(err.message || "Failed to close visit");
+    }
+  };
+
+  // Add Planned Closure Handler
+  const handleAddClosure = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!closureTitle || !closureStartDate || !closureEndDate) return;
+    try {
+      const res = await fetch("/api/owner/closures", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: closureTitle,
+          startDate: new Date(closureStartDate).toISOString(),
+          endDate: new Date(closureEndDate).toISOString(),
+          reason: closureReason,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.error);
+      setSuccessMsg("Scheduled closure added successfully!");
+      setShowAddClosureModal(false);
+      setClosureTitle("");
+      setClosureStartDate("");
+      setClosureEndDate("");
+      setClosureReason("");
+      fetchAllData();
+    } catch (err: any) {
+      setErrorMsg(err.message || "Failed to add closure");
+    }
+  };
+
+  // Delete Planned Closure Handler
+  const handleDeleteClosure = async (closureId: string) => {
+    if (!confirm("Are you sure you want to remove this scheduled closure?")) return;
+    try {
+      const res = await fetch(`/api/owner/closures/${closureId}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.error);
+      setSuccessMsg("Closure removed!");
+      fetchAllData();
+    } catch (err: any) {
+      setErrorMsg(err.message || "Failed to delete closure");
     }
   };
 
@@ -732,19 +792,34 @@ export default function OwnerDashboardPage() {
                           </div>
                         </div>
 
-                        <div className="text-right">
-                          <div className="font-serif font-bold text-stone-900 text-sm">
-                            ₹{(v.bill?.totalAmount || 0).toFixed(2)}
+                        <div className="flex items-center gap-3">
+                          <div className="text-right">
+                            <div className="font-serif font-bold text-stone-900 text-sm">
+                              ₹{(v.bill?.totalAmount || 0).toFixed(2)}
+                            </div>
+                            <span
+                              className={`text-[10px] font-bold uppercase ${
+                                balance === 0 && v.bill?.totalAmount > 0
+                                  ? "text-emerald-700"
+                                  : "text-amber-800"
+                              }`}
+                            >
+                              {balance === 0 && v.bill?.totalAmount > 0 ? "PAID" : `Unpaid: ₹${balance.toFixed(2)}`}
+                            </span>
                           </div>
-                          <span
-                            className={`text-[10px] font-bold uppercase ${
-                              balance === 0 && v.bill?.totalAmount > 0
-                                ? "text-emerald-700"
-                                : "text-amber-800"
-                            }`}
+
+                          <button
+                            onClick={() => {
+                              setVisitToClose(v);
+                              setCloseVisitConfirmPaid(true);
+                              setCloseVisitPaymentMethod("CASH");
+                              setShowCloseVisitModal(true);
+                            }}
+                            className="px-2.5 py-1.5 rounded-xl bg-stone-100 hover:bg-amber-600 hover:text-white text-stone-700 border border-stone-200 text-xs font-semibold transition-all shadow-xs"
+                            title="Close table"
                           >
-                            {balance === 0 && v.bill?.totalAmount > 0 ? "PAID" : `Unpaid: ₹${balance.toFixed(2)}`}
-                          </span>
+                            Close
+                          </button>
                         </div>
                       </div>
                     );
@@ -1594,6 +1669,64 @@ export default function OwnerDashboardPage() {
             </div>
           </form>
 
+          {/* Planned Closures & Blackout Dates Section */}
+          <div className="bg-white p-6 sm:p-8 rounded-3xl border border-stone-200 shadow-sm space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-stone-100 pb-3">
+              <div>
+                <h4 className="font-serif text-lg font-bold text-stone-900">
+                  Scheduled Closures & Holiday Blackout Dates
+                </h4>
+                <p className="text-xs text-stone-600">
+                  Reservations cannot be booked by customers during active closure dates.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowAddClosureModal(true)}
+                className="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-md shadow-amber-600/20 flex items-center gap-1.5"
+              >
+                <Plus className="w-4 h-4" /> Schedule Closure
+              </button>
+            </div>
+
+            {closures.length === 0 ? (
+              <div className="p-6 rounded-2xl bg-stone-50 border border-stone-100 text-center text-xs text-stone-500">
+                No upcoming closures scheduled. The café is accepting reservations normally.
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {closures.map((c: any) => (
+                  <div
+                    key={c.id}
+                    className="p-4 rounded-2xl bg-stone-50 border border-stone-200 flex items-start justify-between gap-3 text-xs"
+                  >
+                    <div className="space-y-1">
+                      <strong className="text-stone-900 font-bold text-sm block">{c.title}</strong>
+                      <div className="text-stone-600">
+                        <span>
+                          📅 {format(new Date(c.startDate), "dd MMM yyyy")} &rarr;{" "}
+                          {format(new Date(c.endDate), "dd MMM yyyy")}
+                        </span>
+                      </div>
+                      {c.reason && (
+                        <p className="text-stone-500 italic text-[11px]">Reason: {c.reason}</p>
+                      )}
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteClosure(c.id)}
+                      className="p-1.5 rounded-lg text-red-600 hover:bg-red-50 hover:text-red-700"
+                      title="Remove closure"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
           {/* Printable QR Tent Cards Section */}
           <div className="bg-white p-6 sm:p-8 rounded-3xl border border-stone-200 shadow-sm space-y-4">
             <div className="flex items-center justify-between">
@@ -1606,6 +1739,7 @@ export default function OwnerDashboardPage() {
                 </p>
               </div>
               <button
+                type="button"
                 onClick={() => window.print()}
                 className="px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs font-semibold flex items-center gap-1.5 border border-stone-200"
               >
@@ -1622,6 +1756,7 @@ export default function OwnerDashboardPage() {
                   <strong className="text-stone-900 text-sm block">{t.tableNumber}</strong>
                   <span className="text-[11px] text-stone-500 block">{t.name}</span>
                   <button
+                    type="button"
                     onClick={() => openQrCodeModal(t)}
                     className="w-full py-1.5 rounded-lg bg-amber-50 hover:bg-amber-600 border border-amber-200 text-amber-800 hover:text-white font-bold text-xs flex items-center justify-center gap-1 transition-all"
                   >
@@ -1630,6 +1765,89 @@ export default function OwnerDashboardPage() {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ----------------- MODAL: ADD CLOSURE ----------------- */}
+      {showAddClosureModal && (
+        <div className="fixed inset-0 z-50 bg-stone-950/40 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white p-6 sm:p-8 rounded-3xl max-w-md w-full space-y-5 border border-stone-200 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-stone-100 pb-3">
+              <h3 className="font-serif text-xl font-bold text-stone-900">Schedule Planned Closure</h3>
+              <button
+                type="button"
+                onClick={() => setShowAddClosureModal(false)}
+                className="text-stone-400 hover:text-stone-900"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleAddClosure} className="space-y-4 text-xs">
+              <div className="space-y-1">
+                <label className="font-semibold text-stone-700">Closure Title *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Diwali Holiday / Annual Maintenance"
+                  value={closureTitle}
+                  onChange={(e) => setClosureTitle(e.target.value)}
+                  className="w-full px-3 py-2 rounded-xl bg-stone-50 border border-stone-200 text-stone-900 focus:outline-none focus:border-amber-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="font-semibold text-stone-700">Start Date *</label>
+                  <input
+                    type="date"
+                    required
+                    value={closureStartDate}
+                    onChange={(e) => setClosureStartDate(e.target.value)}
+                    className="w-full px-3 py-2 rounded-xl bg-stone-50 border border-stone-200 text-stone-900 focus:outline-none focus:border-amber-500"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="font-semibold text-stone-700">End Date *</label>
+                  <input
+                    type="date"
+                    required
+                    value={closureEndDate}
+                    onChange={(e) => setClosureEndDate(e.target.value)}
+                    className="w-full px-3 py-2 rounded-xl bg-stone-50 border border-stone-200 text-stone-900 focus:outline-none focus:border-amber-500"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="font-semibold text-stone-700">Public Reason / Notice (Optional)</label>
+                <textarea
+                  rows={2}
+                  placeholder="e.g. Café closed for private catering event"
+                  value={closureReason}
+                  onChange={(e) => setClosureReason(e.target.value)}
+                  className="w-full px-3 py-2 rounded-xl bg-stone-50 border border-stone-200 text-stone-900 focus:outline-none focus:border-amber-500"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2 pt-3 border-t border-stone-100">
+                <button
+                  type="button"
+                  onClick={() => setShowAddClosureModal(false)}
+                  className="px-4 py-2 rounded-xl bg-stone-100 text-stone-700 hover:bg-stone-200 font-medium"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold shadow-md shadow-amber-600/20"
+                >
+                  Save Closure
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
@@ -1901,36 +2119,140 @@ export default function OwnerDashboardPage() {
       )}
 
       {/* ----------------- MODAL: CLOSE VISIT & CHECKOUT ----------------- */}
-      {showCloseVisitModal && visitToClose && (
-        <div className="fixed inset-0 z-50 bg-stone-950/40 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white p-6 sm:p-8 rounded-3xl max-w-md w-full space-y-5 border border-stone-200 shadow-2xl">
-            <h3 className="font-serif text-xl font-bold text-stone-900">
-              Close Table Visit & Free Table
-            </h3>
-            <p className="text-xs text-stone-600">
-              This will conclude the active visit on Table{" "}
-              <strong className="text-stone-900">{visitToClose.table?.tableNumber}</strong>, invalidate the Visit Code (
-              {visitToClose.visitCode}), and mark the table clean and ready for new guests.
-            </p>
+      {showCloseVisitModal && visitToClose && (() => {
+        const closeBillTotal = visitToClose.bill?.totalAmount || 0;
+        const closePaidTotal =
+          visitToClose.bill?.payments?.reduce(
+            (s: number, p: any) => s + (p.status === "COMPLETED" ? p.amount : 0),
+            0
+          ) || 0;
+        const closeBalance = Math.max(0, closeBillTotal - closePaidTotal);
 
-            <div className="flex justify-end gap-2 pt-3 border-t border-stone-100">
-              <button
-                type="button"
-                onClick={() => setShowCloseVisitModal(false)}
-                className="px-4 py-2 rounded-xl bg-stone-100 text-stone-700 text-xs hover:bg-stone-200"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleCloseVisit}
-                className="px-5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-md shadow-amber-600/20"
-              >
-                Confirm Table Checkout
-              </button>
+        return (
+          <div className="fixed inset-0 z-50 bg-stone-950/40 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-white p-6 sm:p-8 rounded-3xl max-w-md w-full space-y-5 border border-stone-200 shadow-2xl">
+              <div className="flex items-center justify-between border-b border-stone-100 pb-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-9 h-9 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 font-mono font-bold flex items-center justify-center text-sm">
+                    {visitToClose.table?.tableNumber || "T"}
+                  </div>
+                  <div>
+                    <h3 className="font-serif text-lg font-bold text-stone-900">
+                      Close Table & Checkout
+                    </h3>
+                    <span className="text-[11px] text-stone-500">
+                      Guest: {visitToClose.guestName || "Walk-in"} • PIN: {visitToClose.visitCode}
+                    </span>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setShowCloseVisitModal(false)}
+                  className="text-stone-400 hover:text-stone-900 p-1"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Bill & Balance Breakdown */}
+              <div className="p-3.5 rounded-2xl bg-stone-50 border border-stone-200 space-y-2 text-xs">
+                <div className="flex justify-between text-stone-600">
+                  <span>Total Bill:</span>
+                  <span className="font-mono font-bold text-stone-900">₹{closeBillTotal.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between text-stone-600">
+                  <span>Already Paid:</span>
+                  <span className="font-mono font-bold text-emerald-700">₹{closePaidTotal.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between pt-1 border-t border-stone-200">
+                  <span className="font-semibold text-stone-800">Remaining Balance:</span>
+                  <strong
+                    className={`font-mono text-sm ${
+                      closeBalance === 0 ? "text-emerald-700" : "text-amber-800"
+                    }`}
+                  >
+                    ₹{closeBalance.toFixed(2)}
+                  </strong>
+                </div>
+              </div>
+
+              {/* Confirmation / Settlement Question */}
+              {closeBalance > 0 ? (
+                <div className="p-4 rounded-2xl bg-amber-50/80 border border-amber-200 space-y-3">
+                  <div className="flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+                    <span className="text-xs font-bold text-amber-950">
+                      Is the bill paid?
+                    </span>
+                  </div>
+
+                  <div className="space-y-2 text-xs">
+                    <label className="flex items-start gap-2 text-stone-800 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={closeVisitConfirmPaid}
+                        onChange={(e) => setCloseVisitConfirmPaid(e.target.checked)}
+                        className="w-4 h-4 rounded text-amber-600 mt-0.5"
+                      />
+                      <span>
+                        <strong>Yes, mark bill as fully paid & settled</strong>
+                        <span className="block text-[11px] text-stone-500">
+                          Remaining ₹{closeBalance.toFixed(2)} will be recorded automatically.
+                        </span>
+                      </span>
+                    </label>
+
+                    {closeVisitConfirmPaid && (
+                      <div className="pt-2 pl-6 space-y-1">
+                        <label className="text-[11px] font-semibold text-stone-700">Settlement Method</label>
+                        <select
+                          value={closeVisitPaymentMethod}
+                          onChange={(e) => setCloseVisitPaymentMethod(e.target.value)}
+                          className="w-full px-3 py-1.5 rounded-xl bg-white border border-amber-200 text-stone-900 text-xs focus:outline-none focus:border-amber-500"
+                        >
+                          <option value="CASH">Cash Settlement</option>
+                          <option value="UPI_QR">UPI / QR Scan</option>
+                          <option value="CREDIT_CARD">Credit Card</option>
+                          <option value="DEBIT_CARD">Debit Card</option>
+                          <option value="OTHER">Other Method</option>
+                        </select>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-900 flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>
+                    Bill is 100% paid (₹{closeBillTotal.toFixed(2)}). Table will be freed and marked clean.
+                  </span>
+                </div>
+              )}
+
+              <p className="text-[11px] text-stone-500">
+                Concluding this visit will invalidate the customer's PIN and reset table state.
+              </p>
+
+              <div className="flex justify-end gap-2 pt-3 border-t border-stone-100">
+                <button
+                  type="button"
+                  onClick={() => setShowCloseVisitModal(false)}
+                  className="px-4 py-2 rounded-xl bg-stone-100 text-stone-700 text-xs hover:bg-stone-200 font-medium"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleCloseVisit}
+                  className="px-5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-md shadow-amber-600/20"
+                >
+                  {closeBalance > 0 && closeVisitConfirmPaid
+                    ? `Yes, Settle ₹${closeBalance.toFixed(0)} & Close Table`
+                    : "Yes, Close Table"}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {/* ----------------- MODAL: VIEW TABLE QR CODE ----------------- */}
       {showQrModal && selectedQrTable && (

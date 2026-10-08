@@ -16,7 +16,18 @@ export async function POST(
     }
 
     const { id } = await params;
-    const closed = await closeVisit(id);
+    let body: any = {};
+    try {
+      body = await req.json();
+    } catch {
+      body = {};
+    }
+
+    const closed = await closeVisit(id, {
+      autoSettle: body.autoSettle !== undefined ? Boolean(body.autoSettle) : true,
+      paymentMethod: body.paymentMethod || "CASH",
+      referenceNote: body.referenceNote || "Settled upon table close checkout",
+    });
 
     return NextResponse.json({
       success: true,
