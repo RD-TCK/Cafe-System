@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
-import { ConnectionBanner } from "@/components/ConnectionBanner";
+import { RootAppShell } from "@/components/RootAppShell";
 
 export const metadata: Metadata = {
   title: "The Roasted Bean Café & Roastery | Artisanal Dining & Table Reservations",
@@ -19,10 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className="min-h-screen flex flex-col bg-stone-950 text-stone-100 selection:bg-amber-500 selection:text-stone-950">
-        <Navbar />
-        <main className="flex-grow">{children}</main>
-        <Footer />
-        <ConnectionBanner />
+        <RootAppShell>{children}</RootAppShell>
       </body>
     </html>
   );

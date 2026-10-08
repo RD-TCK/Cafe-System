@@ -162,6 +162,165 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Dual Portal Architecture Showcase */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        <div className="text-center space-y-3">
+          <span className="text-amber-400 uppercase tracking-widest text-xs font-bold">
+            System Architecture & Portals
+          </span>
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-stone-100">
+            Divided into Two Powerful Portals
+          </h2>
+          <p className="text-stone-400 max-w-2xl mx-auto text-sm">
+            Carefully crafted interfaces tailored separately for guests dining in and managers running café operations.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Customer Portal Card */}
+          <div className="p-8 rounded-3xl bg-gradient-to-br from-stone-900/90 to-stone-950 border-2 border-stone-800 hover:border-amber-500/40 transition-all flex flex-col justify-between space-y-6 shadow-xl">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 text-xs font-bold uppercase tracking-wider">
+                  Customer Portal
+                </span>
+                <span className="text-xs text-stone-400">For Guests & Diners</span>
+              </div>
+              <h3 className="font-serif text-2xl font-bold text-stone-100">
+                Guest Experience & Table Dining
+              </h3>
+              <p className="text-stone-400 text-xs leading-relaxed">
+                Clean, mobile-first experience for browsing, booking, ordering and settling bills without waiter delays.
+              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                <div className="p-3 rounded-2xl bg-stone-950/60 border border-stone-800/80 text-xs space-y-1">
+                  <div className="font-bold text-stone-200 flex items-center gap-1.5">
+                    <UtensilsCrossed className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Live Menu & Filters</span>
+                  </div>
+                  <p className="text-[11px] text-stone-400">Dietary filters (Veg, Vegan, Gluten-Free, Spicy) & live prices.</p>
+                </div>
+
+                <div className="p-3 rounded-2xl bg-stone-950/60 border border-stone-800/80 text-xs space-y-1">
+                  <div className="font-bold text-stone-200 flex items-center gap-1.5">
+                    <CalendarDays className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Online Table Booking</span>
+                  </div>
+                  <p className="text-[11px] text-stone-400">Instant slot validation with guaranteed buffer protection.</p>
+                </div>
+
+                <div className="p-3 rounded-2xl bg-stone-950/60 border border-stone-800/80 text-xs space-y-1">
+                  <div className="font-bold text-stone-200 flex items-center gap-1.5">
+                    <QrCode className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>In-Café QR Ordering</span>
+                  </div>
+                  <p className="text-[11px] text-stone-400">Order rounds directly to kitchen and track live prep status.</p>
+                </div>
+
+                <div className="p-3 rounded-2xl bg-stone-950/60 border border-stone-800/80 text-xs space-y-1">
+                  <div className="font-bold text-stone-200 flex items-center gap-1.5">
+                    <Search className="w-3.5 h-3.5 text-blue-400" />
+                    <span>Lookup & Reschedule</span>
+                  </div>
+                  <p className="text-[11px] text-stone-400">Manage existing reservations with instant rollback safety.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-stone-800/80 flex flex-wrap items-center gap-3">
+              <Link
+                href="/reserve"
+                className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs shadow-md shadow-amber-500/20 transition-all flex items-center gap-1.5"
+              >
+                <span>Reserve a Table</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </Link>
+              <Link
+                href="/menu"
+                className="px-4 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-stone-200 font-semibold text-xs border border-stone-800 transition-all"
+              >
+                Browse Menu
+              </Link>
+              <Link
+                href="/table/demo"
+                className="px-4 py-2.5 rounded-xl bg-emerald-950/60 hover:bg-emerald-900 text-emerald-300 font-semibold text-xs border border-emerald-800/60 transition-all"
+              >
+                Test Table QR
+              </Link>
+            </div>
+          </div>
+
+          {/* Owner & Staff Portal Card */}
+          <div className="p-8 rounded-3xl bg-gradient-to-br from-stone-900/90 to-stone-950 border-2 border-stone-800 hover:border-amber-500/40 transition-all flex flex-col justify-between space-y-6 shadow-xl">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="px-3 py-1 rounded-full bg-amber-500 text-stone-950 text-xs font-extrabold uppercase tracking-wider">
+                  Owner & Staff Portal
+                </span>
+                <span className="text-xs text-amber-400 font-semibold">Protected Operations Center</span>
+              </div>
+              <h3 className="font-serif text-2xl font-bold text-stone-100">
+                Kitchen, Floor & Cafe Management
+              </h3>
+              <p className="text-stone-400 text-xs leading-relaxed">
+                Centralized POS & operations station for baristas, floor managers, and café owners.
+              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                <div className="p-3 rounded-2xl bg-stone-950/60 border border-stone-800/80 text-xs space-y-1">
+                  <div className="font-bold text-stone-200 flex items-center gap-1.5">
+                    <Flame className="w-3.5 h-3.5 text-red-400" />
+                    <span>Live Kitchen KDS</span>
+                  </div>
+                  <p className="text-[11px] text-stone-400">Accept, cook, and serve incoming rounds with audio/visual alerts.</p>
+                </div>
+
+                <div className="p-3 rounded-2xl bg-stone-950/60 border border-stone-800/80 text-xs space-y-1">
+                  <div className="font-bold text-stone-200 flex items-center gap-1.5">
+                    <Users className="w-3.5 h-3.5 text-blue-400" />
+                    <span>Floor & Walk-In Desk</span>
+                  </div>
+                  <p className="text-[11px] text-stone-400">Live table occupancy, combine tables, and register walk-ins.</p>
+                </div>
+
+                <div className="p-3 rounded-2xl bg-stone-950/60 border border-stone-800/80 text-xs space-y-1">
+                  <div className="font-bold text-stone-200 flex items-center gap-1.5">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Reservation Check-In</span>
+                  </div>
+                  <p className="text-[11px] text-stone-400">Confirm requests, assign tables, and generate dynamic visit tokens.</p>
+                </div>
+
+                <div className="p-3 rounded-2xl bg-stone-950/60 border border-stone-800/80 text-xs space-y-1">
+                  <div className="font-bold text-stone-200 flex items-center gap-1.5">
+                    <QrCode className="w-3.5 h-3.5 text-amber-400" />
+                    <span>QR Printable Stands</span>
+                  </div>
+                  <p className="text-[11px] text-stone-400">Printable high-res tent stand cards for every table on the floor.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-stone-800/80 flex flex-wrap items-center gap-3">
+              <Link
+                href="/owner/dashboard"
+                className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs shadow-md shadow-amber-500/20 transition-all flex items-center gap-1.5"
+              >
+                <span>Open Owner Command Center</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </Link>
+              <Link
+                href="/owner/qr-codes"
+                className="px-4 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-stone-200 font-semibold text-xs border border-stone-800 transition-all"
+              >
+                Print Table QRs
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Ambiance & Seating Showcase */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         <div className="text-center space-y-3">
