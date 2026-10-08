@@ -9,7 +9,12 @@ import {
   QrCode,
   Sparkles,
   Download,
-  Share2,
+  Copy,
+  Check,
+  ExternalLink,
+  Layers,
+  RefreshCw,
+  Eye,
 } from "lucide-react";
 import QRCode from "qrcode";
 
@@ -27,57 +32,59 @@ interface TableQRItem {
 export default function OwnerQRCodesPage() {
   const [tablesWithQR, setTablesWithQR] = useState<TableQRItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedSection, setSelectedSection] = useState("ALL");
+  const [copiedId, setCopiedId] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function loadAllTableQRs() {
-      try {
-        const res = await fetch("/api/tables");
-        const data = await res.json();
+  const loadAllTableQRs = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/tables");
+      const data = await res.json();
 
-        if (data.success && data.data) {
-          const origin = window.location.origin;
-          const qrList: TableQRItem[] = [];
+      if (data.success && data.data) {
+        const origin = window.location.origin;
+        const qrList: TableQRItem[] = [];
 
-          for (const tbl of data.data) {
-            const targetUrl = `${origin}/table/${tbl.id}`;
-            let qrDataUrl = "";
-            try {
-              qrDataUrl = await QRCode.toDataURL(targetUrl, {
-                width: 400,
-                margin: 2,
-                color: {
-                  dark: "#1c1917",
-                  light: "#ffffff",
-                },
-              });
-            } catch (qrErr) {
-              console.error("Local QR generation fallback for table", tbl.tableNumber, qrErr);
-              qrDataUrl = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(
-                targetUrl
-              )}`;
-            }
-
-            qrList.push({
-              id: tbl.id,
-              tableNumber: tbl.tableNumber,
-              name: tbl.name,
-              section: tbl.section,
-              capacityMin: tbl.capacityMin,
-              capacityMax: tbl.capacityMax,
-              qrDataUrl,
-              targetUrl,
+        for (const tbl of data.data) {
+          const targetUrl = `${origin}/table/${tbl.id}`;
+          let qrDataUrl = "";
+          try {
+            qrDataUrl = await QRCode.toDataURL(targetUrl, {
+              width: 450,
+              margin: 2,
+              color: {
+                dark: "#1c1917",
+                light: "#ffffff",
+              },
             });
+          } catch (qrErr) {
+            qrDataUrl = `https://api.qrserver.com/v1/create-qr-code/?size=450x450&data=${encodeURIComponent(
+              targetUrl
+            )}`;
           }
 
-          setTablesWithQR(qrList);
+          qrList.push({
+            id: tbl.id,
+            tableNumber: tbl.tableNumber,
+            name: tbl.name,
+            section: tbl.section || "Main Dining Hall",
+            capacityMin: tbl.capacityMin,
+            capacityMax: tbl.capacityMax,
+            qrDataUrl,
+            targetUrl,
+          });
         }
-      } catch (err) {
-        console.error("Failed to load tables", err);
-      } finally {
-        setLoading(false);
-      }
-    }
 
+        setTablesWithQR(qrList);
+      }
+    } catch (err) {
+      console.error("Failed to load tables", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     loadAllTableQRs();
   }, []);
 
@@ -85,8 +92,29 @@ export default function OwnerQRCodesPage() {
     window.print();
   };
 
+  const handleCopyLink = (targetUrl: string, id: string) => {
+    navigator.clipboard.writeText(targetUrl);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
+  };
+
+  const handleDownloadQR = (qrDataUrl: string, tableNumber: string) => {
+    const a = document.createElement("a");
+    a.href = qrDataUrl;
+    a.download = `QR-Table-${tableNumber}.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+  const sections = ["ALL", ...Array.from(new Set(tablesWithQR.map((t) => t.section)))];
+  const filteredTables =
+    selectedSection === "ALL"
+      ? tablesWithQR
+      : tablesWithQR.filter((t) => t.section === selectedSection);
+
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8 space-y-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Top Header Controls (Hidden on Print) */}
       <div className="print:hidden flex flex-wrap items-center justify-between gap-4 glass-panel p-6 rounded-3xl border border-stone-800 shadow-xl">
         <div className="space-y-1">
@@ -100,38 +128,66 @@ export default function OwnerQRCodesPage() {
           </div>
           <h1 className="font-serif text-2xl sm:text-3xl font-bold text-stone-100 flex items-center gap-2.5">
             <QrCode className="w-7 h-7 text-amber-500" />
-            <span>Printable Table QR Stand Cards</span>
+            <span>Table QR Code & Stand Card Manager</span>
           </h1>
           <p className="text-xs text-stone-400">
-            High-resolution scannable QR stands ready to print and place on café tables.
+            Generate, preview, download, and print table tent cards for contactless customer ordering.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            onClick={loadAllTableQRs}
+            className="p-3 rounded-2xl bg-stone-900 hover:bg-stone-800 border border-stone-800 text-stone-300 hover:text-white"
+            title="Refresh QRs"
+          >
+            <RefreshCw className="w-4 h-4" />
+          </button>
           <button
             onClick={handlePrint}
             disabled={loading || tablesWithQR.length === 0}
             className="px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-bold text-sm shadow-xl shadow-amber-500/20 flex items-center gap-2 transition-all disabled:opacity-40"
           >
             <Printer className="w-4 h-4" />
-            <span>Print All Table Stands</span>
+            <span>Print All Table Stand Cards</span>
           </button>
         </div>
+      </div>
+
+      {/* Section Filter Pills (Hidden on Print) */}
+      <div className="print:hidden flex items-center gap-2 overflow-x-auto pb-2">
+        <div className="text-xs font-semibold text-stone-400 flex items-center gap-1.5 mr-2">
+          <Layers className="w-4 h-4 text-amber-500" />
+          <span>Floor Section:</span>
+        </div>
+        {sections.map((sec) => (
+          <button
+            key={sec}
+            onClick={() => setSelectedSection(sec)}
+            className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all ${
+              selectedSection === sec
+                ? "bg-amber-500 text-stone-950 shadow-md shadow-amber-500/20"
+                : "bg-stone-900 text-stone-400 hover:text-white border border-stone-800"
+            }`}
+          >
+            {sec === "ALL" ? `All Tables (${tablesWithQR.length})` : sec}
+          </button>
+        ))}
       </div>
 
       {loading ? (
         <div className="py-24 text-center space-y-3 print:hidden">
           <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-xs text-stone-400">Generating high-res vector QR codes for all tables...</p>
+          <p className="text-xs text-stone-400">Loading vector QR codes for floor tables...</p>
         </div>
-      ) : tablesWithQR.length === 0 ? (
-        <div className="glass-panel p-12 text-center rounded-3xl text-stone-400 text-sm">
-          No active tables found.
+      ) : filteredTables.length === 0 ? (
+        <div className="glass-panel p-12 text-center rounded-3xl text-stone-400 text-sm print:hidden">
+          No active tables found for this section.
         </div>
       ) : (
         /* Printable QR Cards Grid */
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 print:grid-cols-2 print:gap-4 print:p-0">
-          {tablesWithQR.map((item) => (
+          {filteredTables.map((item) => (
             <div
               key={item.id}
               className="bg-white text-stone-950 rounded-3xl p-6 sm:p-8 flex flex-col items-center justify-between text-center border-2 border-stone-200 shadow-xl print:shadow-none print:border-stone-400 print:break-inside-avoid print:p-6"
@@ -147,12 +203,12 @@ export default function OwnerQRCodesPage() {
                   </span>
                 </div>
                 <div className="text-[10px] uppercase font-bold tracking-widest text-amber-700">
-                  Café & Roastery
+                  Café & Roastery • Indiranagar
                 </div>
               </div>
 
               {/* Table Big Number & Details */}
-              <div className="my-5 space-y-1">
+              <div className="my-4 space-y-1">
                 <div className="text-[11px] font-bold uppercase tracking-widest text-stone-500">
                   Table Number
                 </div>
@@ -160,11 +216,11 @@ export default function OwnerQRCodesPage() {
                   {item.tableNumber}
                 </div>
                 <div className="text-xs font-semibold text-stone-700">
-                  {item.name} • {item.section || "Main Dining Hall"}
+                  {item.name} • {item.section} (Seats {item.capacityMin}–{item.capacityMax})
                 </div>
               </div>
 
-              {/* QR Code */}
+              {/* QR Code Container */}
               <div className="p-3 bg-stone-50 rounded-2xl border-2 border-stone-100 shadow-inner">
                 <img
                   src={item.qrDataUrl}
@@ -174,7 +230,7 @@ export default function OwnerQRCodesPage() {
               </div>
 
               {/* Scan Instructions */}
-              <div className="mt-5 space-y-1 w-full pt-4 border-t border-stone-200">
+              <div className="mt-4 space-y-1 w-full pt-3 border-t border-stone-200">
                 <div className="text-xs font-bold text-stone-900 flex items-center justify-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-amber-600" />
                   <span>Scan to Order Contactlessly</span>
@@ -182,6 +238,48 @@ export default function OwnerQRCodesPage() {
                 <p className="text-[11px] text-stone-600 leading-snug">
                   Point phone camera to browse live menu, customize & place instant orders to the kitchen.
                 </p>
+              </div>
+
+              {/* Action Buttons (Hidden on Print) */}
+              <div className="print:hidden w-full pt-4 mt-2 border-t border-stone-100 grid grid-cols-3 gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleDownloadQR(item.qrDataUrl, item.tableNumber)}
+                  className="py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 text-[11px] font-semibold flex items-center justify-center gap-1 transition-colors"
+                  title="Download PNG QR Image"
+                >
+                  <Download className="w-3.5 h-3.5 text-stone-600" />
+                  <span>PNG</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleCopyLink(item.targetUrl, item.id)}
+                  className="py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 text-[11px] font-semibold flex items-center justify-center gap-1 transition-colors"
+                  title="Copy table link"
+                >
+                  {copiedId === item.id ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 text-emerald-600" />
+                      <span className="text-emerald-700">Copied!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3.5 h-3.5 text-stone-600" />
+                      <span>Link</span>
+                    </>
+                  )}
+                </button>
+
+                <Link
+                  href={`/table/${item.id}`}
+                  target="_blank"
+                  className="py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 text-[11px] font-bold flex items-center justify-center gap-1 transition-colors"
+                  title="Test Live Customer View"
+                >
+                  <Eye className="w-3.5 h-3.5 text-amber-700" />
+                  <span>Test</span>
+                </Link>
               </div>
             </div>
           ))}

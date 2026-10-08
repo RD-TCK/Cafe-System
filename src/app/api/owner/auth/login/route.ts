@@ -4,11 +4,12 @@ import { verifyOwnerCredentials, setOwnerSessionCookie } from "@/lib/auth";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { password } = body;
+    const { password, pin, email } = body;
+    const credential = password || pin;
 
-    if (!verifyOwnerCredentials(password)) {
+    if (!verifyOwnerCredentials(credential, email)) {
       return NextResponse.json(
-        { success: false, error: "Invalid owner PIN or password" },
+        { success: false, error: "Invalid owner PIN, email or password" },
         { status: 401 }
       );
     }
